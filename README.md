@@ -1,6 +1,6 @@
-# 🏢 Conference Room Booking System Application
+#  Conference Room Booking System Application
 
-## 📌 Project Description
+##  Project Description
 This project is a simple Conference Room Booking Application that performs the core business logic required to manage conference room bookings.
 
 The system allows:
@@ -9,13 +9,13 @@ The system allows:
 - Tracking room availability using booking statuses
 
 
-## 🛠️ Technologies Used
+##  Technologies Used
 - C#
 - .NET Console Application
 - Visual Studio Code
 - Git & GitHub
 
-## 📁 Project Structure
+##  Project Structure
 ConferenceRoomBookingSystem/
 │
 ├── Program.cs
@@ -43,7 +43,7 @@ ConferenceRoomBookingSystem/
 
 ---
 
-## ⚙️ Features
+##  Features
 - Conference rooms with predefined capacities
 - Book and cancel room reservations
 - Booking status tracking using enums
@@ -51,7 +51,7 @@ ConferenceRoomBookingSystem/
 - Clean separation between domain logic and console testing
 
 
-## ▶️ How to Run the Application
+##  How to Run the Application
 1. Open the project folder in **Visual Studio Code**
 2. Ensure the .NET SDK is installed
 3. Run the application using:
