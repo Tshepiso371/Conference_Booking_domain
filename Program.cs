@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 class Program
 {
     static void Main()
     {
-        
+        // Rooms
         ConferenceRoom[] rooms =
         {
             new ConferenceRoom("Room A", RoomCapacity.Ten),
@@ -14,14 +16,10 @@ class Program
             new ConferenceRoom("Room E", RoomCapacity.Twenty)
         };
 
-        Booking[] bookings =
-        {
-            new Booking(rooms[0]),
-            new Booking(rooms[1]),
-            new Booking(rooms[2]),
-            new Booking(rooms[3]),
-            new Booking(rooms[4])
-        };
+        // 1.2
+        List<Booking> bookings = new List<Booking>();
+
+        Console.WriteLine("=== Conference Room Booking System ===");
 
         
         Console.Write("Enter your name: ");
@@ -33,7 +31,7 @@ class Program
         Console.Write("Enter your email: ");
         string email = Console.ReadLine();
 
-        Console.WriteLine("\nWelcome " + name + " " + surname + "!\n");
+        Console.WriteLine($"\nWelcome {name} {surname}!\n");
 
         bool running = true;
 
@@ -48,7 +46,7 @@ class Program
             string choice = Console.ReadLine();
             Console.WriteLine();
 
-            // VIEW ROOMS
+            // 1️⃣ VIEW ROOMS
             if (choice == "1")
             {
                 for (int i = 0; i < rooms.Length; i++)
@@ -56,39 +54,90 @@ class Program
                     Console.WriteLine(
                         (i + 1) + ". " +
                         rooms[i].Name +
-                        " (" + (int)rooms[i].Capacity + " people) - " +
-                        bookings[i].Status
+                        " (" + (int)rooms[i].Capacity + " seats)"
                     );
                 }
                 Console.WriteLine();
             }
 
-            // BOOK
+            // 2️⃣ BOOK ROOM
             else if (choice == "2")
             {
-                Console.Write("Enter room number (1 - 5): ");
-                int index = int.Parse(Console.ReadLine()) - 1;
+                Console.Write("Select room number (1 - 5): ");
+                int roomIndex = int.Parse(Console.ReadLine()) - 1;
 
-                bookings[index].BookRoom();
-                Console.WriteLine();
+                if (roomIndex < 0 || roomIndex >= rooms.Length)
+                {
+                    Console.WriteLine("Invalid room selection.\n");
+                    continue;
+                }
+
+                Console.Write("Enter start time (yyyy-MM-dd HH:mm): ");
+                DateTime startTime = DateTime.Parse(Console.ReadLine());
+
+                Console.Write("Enter end time (yyyy-MM-dd HH:mm): ");
+                DateTime endTime = DateTime.Parse(Console.ReadLine());
+
+                ConferenceRoom selectedRoom = rooms[roomIndex];
+
+                // Prevent overlapping bookings (LINQ)
+                bool overlapExists = bookings.Any(b =>
+                    b.Room == selectedRoom &&
+                    startTime < b.EndTime &&
+                    endTime > b.StartTime
+                );
+
+                if (overlapExists)
+                {
+                    Console.WriteLine("Room is already booked for that time.\n");
+                    continue; // FAIL-FAST
+                }
+
+                Booking booking = new Booking(selectedRoom, startTime, endTime);
+                booking.Confirm();
+                bookings.Add(booking);
+
+                Console.WriteLine("Booking successful!\n");
             }
 
-            // CANCEL
+            // 3️⃣ CANCEL BOOKING
             else if (choice == "3")
             {
-                Console.Write("Enter room number (1 - 5): ");
-                int index = int.Parse(Console.ReadLine()) - 1;
+                Console.Write("Select room number (1 - 5): ");
+                int roomIndex = int.Parse(Console.ReadLine()) - 1;
 
-                bookings[index].CancelRoom();
-                Console.WriteLine();
+                if (roomIndex < 0 || roomIndex >= rooms.Length)
+                {
+                    Console.WriteLine("Invalid room selection.\n");
+                    continue;
+                }
+
+                Console.Write("Enter booking start time (yyyy-MM-dd HH:mm): ");
+                DateTime startTime = DateTime.Parse(Console.ReadLine());
+
+                ConferenceRoom room = rooms[roomIndex];
+
+                Booking bookingToCancel = bookings.FirstOrDefault(b =>
+                    b.Room == room && b.StartTime == startTime
+                );
+
+                if (bookingToCancel == null)
+                {
+                    Console.WriteLine("Booking not found.\n");
+                    continue; // FAIL-FAST
+                }
+
+                bookingToCancel.Cancel();
+                Console.WriteLine("Booking cancelled.\n");
             }
 
-            // EXIT
+            // 4️⃣ EXIT
             else if (choice == "4")
             {
                 running = false;
                 Console.WriteLine("Goodbye!");
             }
+
             else
             {
                 Console.WriteLine("Invalid option.\n");
