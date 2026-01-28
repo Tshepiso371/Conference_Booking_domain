@@ -37,7 +37,7 @@ class Program
 
         while (running)
         {
-            Console.WriteLine("1. View room status");
+            Console.WriteLine("1. View rooms");
             Console.WriteLine("2. Book a room");
             Console.WriteLine("3. Cancel booking");
             Console.WriteLine("4. Exit");
@@ -46,7 +46,7 @@ class Program
             string choice = Console.ReadLine();
             Console.WriteLine();
 
-            // 1️⃣ VIEW ROOMS
+            // VIEW ROOMS
             if (choice == "1")
             {
                 for (int i = 0; i < rooms.Length; i++)
@@ -60,7 +60,7 @@ class Program
                 Console.WriteLine();
             }
 
-            // 2️⃣ BOOK ROOM
+            //  BOOK ROOM
             else if (choice == "2")
             {
                 Console.Write("Select room number (1 - 5): ");
@@ -100,7 +100,7 @@ class Program
                 Console.WriteLine("Booking successful!\n");
             }
 
-            // 3️⃣ CANCEL BOOKING
+            // CANCEL BOOKING
             else if (choice == "3")
             {
                 Console.Write("Select room number (1 - 5): ");
@@ -117,9 +117,7 @@ class Program
 
                 ConferenceRoom room = rooms[roomIndex];
 
-                Booking bookingToCancel = bookings.FirstOrDefault(b =>
-                    b.Room == room && b.StartTime == startTime
-                );
+                Booking bookingToCancel = bookings.FirstOrDefault(b =>b.Room == room && b.StartTime == startTime );
 
                 if (bookingToCancel == null)
                 {
@@ -131,7 +129,7 @@ class Program
                 Console.WriteLine("Booking cancelled.\n");
             }
 
-            // 4️⃣ EXIT
+            // EXIT
             else if (choice == "4")
             {
                 running = false;
