@@ -1,47 +1,41 @@
+using System;
+
 class Booking
 {
     private ConferenceRoom room;
+    private DateTime startTime;
+    private DateTime endTime;
     private BookingStatus status;
 
-    public Booking(ConferenceRoom room)
+    public ConferenceRoom Room => room;
+    public DateTime StartTime => startTime;
+    public DateTime EndTime => endTime;
+    public BookingStatus Status => status;
+
+    public Booking(ConferenceRoom room, DateTime start, DateTime end)
     {
+        if (end <= start)
+            throw new ArgumentException("End time must be after start time.");
+
         this.room = room;
+        startTime = start;
+        endTime = end;
         status = BookingStatus.Available;
     }
 
-    public ConferenceRoom Room
-    {
-        get { return room; }
-    }
-
-    public BookingStatus Status
-    {
-        get { return status; }
-    }
-
-    public void BookRoom()
+    public void Confirm()
     {
         if (status == BookingStatus.Booked)
-        {
-            Console.WriteLine("Room already booked.");
-        }
-        else
-        {
-            status = BookingStatus.Booked;
-            Console.WriteLine("Room booked successfully.");
-        }
+            throw new InvalidOperationException("Booking already confirmed.");
+
+        status = BookingStatus.Booked;
     }
 
-    public void CancelRoom()
+    public void Cancel()
     {
         if (status == BookingStatus.Available)
-        {
-            Console.WriteLine("Room is not booked.");
-        }
-        else
-        {
-            status = BookingStatus.Available;
-            Console.WriteLine("Booking cancelled.");
-        }
+            throw new InvalidOperationException("Booking is not active.");
+
+        status = BookingStatus.Available;
     }
 }
