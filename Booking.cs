@@ -13,15 +13,21 @@ class Booking
     public BookingStatus Status => status;
 
     public Booking(ConferenceRoom room, DateTime start, DateTime end)
-    {
-        if (end <= start)
-            throw new ArgumentException("End time must be after start time.");
+{
+    
+    if (room == null)
+        throw new ArgumentNullException(nameof(room), "Booking must reference a room.");
 
-        this.room = room;
-        startTime = start;
-        endTime = end;
-        status = BookingStatus.Available;
-    }
+    
+    if (end <= start)
+        throw new ArgumentException("End time must be after start time.");
+
+    this.room = room;
+    startTime = start;
+    endTime = end;
+    status = BookingStatus.Available;
+}
+
 
     public void Confirm()
     {
