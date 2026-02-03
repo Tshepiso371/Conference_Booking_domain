@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Conference_Booking_domain.Domain;
+
+namespace Conference_Booking_domain.Persistence;
+
 
 class BookingRepository
 {

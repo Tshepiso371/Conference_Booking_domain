@@ -1,6 +1,8 @@
+namespace Conference_Booking_domain.Domain;
 using System;
+using Conference_Booking_domain.Enums;
 
-class Booking
+ public class Booking
 {
     private ConferenceRoom room;
     private DateTime startTime;

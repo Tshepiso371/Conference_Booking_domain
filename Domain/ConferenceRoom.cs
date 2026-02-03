@@ -1,4 +1,7 @@
-class ConferenceRoom
+using Conference_Booking_domain.Enums;
+namespace Conference_Booking_domain.Domain;
+
+ public class ConferenceRoom
 {
     private string name;
     private RoomCapacity capacity;
