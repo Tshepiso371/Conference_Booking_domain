@@ -3,6 +3,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Conference_Booking_domain.Domain;
+using Conference_Booking_domain.Persistence;
+using Conference_Booking_domain.Enums;
 
 namespace Conference_Booking_domain.Persistence;
 
@@ -31,19 +33,40 @@ namespace Conference_Booking_domain.Persistence;
         await File.WriteAllTextAsync(filePath, data.ToString());
     }
 
-    public async Task<List<string>> LoadAsync()
-    {
-        if (!File.Exists(filePath))
-            return new List<string>();
+    public async Task<List<Booking>> LoadAsync()
+{
+    var bookings = new List<Booking>();
 
-        try
+    if (!File.Exists(filePath))
+        return bookings;
+
+    try
+    {
+        var lines = await File.ReadAllLinesAsync(filePath);
+
+        foreach (var line in lines)
         {
-            var lines = await File.ReadAllLinesAsync(filePath);
-            return new List<string>(lines);
-        }
-        catch
-        {
-            return new List<string>();
+            var parts = line.Split('|');
+
+            var room = new ConferenceRoom(parts[0], RoomCapacity.Ten);
+            var start = DateTime.Parse(parts[1]);
+            var end = DateTime.Parse(parts[2]);
+            var status = parts[3];
+
+            var booking = new Booking(room, start, end);
+
+            if (status == "Confirmed")
+                booking.Confirm();
+
+            bookings.Add(booking);
         }
     }
+    catch
+    {
+        return new List<Booking>();
+    }
+
+    return bookings;
+}
+
 }

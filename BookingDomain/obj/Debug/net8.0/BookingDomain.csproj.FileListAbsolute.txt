@@ -10,3 +10,15 @@ C:\Users\thaba\Documents\Conference_Booking_Domain\Conference_Booking_domain\Boo
 C:\Users\thaba\Documents\Conference_Booking_Domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\refint\BookingDomain.dll
 C:\Users\thaba\Documents\Conference_Booking_Domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\BookingDomain.pdb
 C:\Users\thaba\Documents\Conference_Booking_Domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\ref\BookingDomain.dll
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\bin\Debug\net8.0\BookingDomain.deps.json
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\bin\Debug\net8.0\BookingDomain.dll
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\bin\Debug\net8.0\BookingDomain.pdb
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\BookingDomain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\BookingDomain.AssemblyInfoInputs.cache
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\BookingDomain.AssemblyInfo.cs
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\BookingDomain.csproj.CoreCompileInputs.cache
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\BookingDomain.sourcelink.json
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\BookingDomain.dll
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\refint\BookingDomain.dll
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\BookingDomain.pdb
+C:\Users\Training Center 1\Downloads\conference_booking_domain\Conference_Booking_domain\BookingDomain\obj\Debug\net8.0\ref\BookingDomain.dll
