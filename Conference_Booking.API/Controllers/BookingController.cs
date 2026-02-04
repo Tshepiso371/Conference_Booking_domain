@@ -20,12 +20,7 @@ namespace Conference_Booking.API.Controllers
             _rooms = seedData.SeedRooms();
         }
 
-        // GET: /api/bookings/rooms
-        [HttpGet("rooms")]
-        public IActionResult GetRooms()
-        {
-            return Ok(_rooms);
-        }
+        
 
         // POST: /api/bookings
         [HttpPost]
@@ -64,6 +59,36 @@ namespace Conference_Booking.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost("{id}/cancel")]
+         public async Task<IActionResult> CancelBooking(int id)
+        {
+           try
+         {
+        var bookings = await _repository.LoadAsync();
+
+        if (id < 0 || id >= bookings.Count)
+            return NotFound("Booking not found.");
+
+           bookings[id].Cancel();
+           await _repository.SaveAsync(bookings);
+
+        return Ok("Booking cancelled.");
+       }
+         catch (Exception ex)
+        {
+        return BadRequest(ex.Message);
+          }
+      }
+
+      [HttpGet]
+       public async Task<IActionResult> GetBookings()
+           {
+          var bookings = await _repository.LoadAsync();
+           return Ok(bookings);
+           }
+
+           
     }
 
     // DTO for POST requests
