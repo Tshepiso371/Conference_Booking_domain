@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Conference_Booking_domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+17d5d282cf7db333fc89d36eb48b10e752d04e10")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0fcee509eb8a91df66c65c2d528c637631e71e94")]
 [assembly: System.Reflection.AssemblyProductAttribute("Conference_Booking_domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Conference_Booking_domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

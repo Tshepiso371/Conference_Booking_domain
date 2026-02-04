@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Conference_Booking_domain.Domain;
 using Conference_Booking_domain.Enums;
+using Conference_Booking_domain.Data;
 
 
-namespace Conference_Booking_domain.Logic
+namespace Conference_Booking_domain.Data
 {
     public class SeedData
     {
