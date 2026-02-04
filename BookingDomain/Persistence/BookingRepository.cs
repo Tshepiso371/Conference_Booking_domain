@@ -7,7 +7,7 @@ using Conference_Booking_domain.Domain;
 namespace Conference_Booking_domain.Persistence;
 
 
-class BookingRepository
+ public class BookingRepository
 {
     private readonly string filePath = "bookings.txt";
 
