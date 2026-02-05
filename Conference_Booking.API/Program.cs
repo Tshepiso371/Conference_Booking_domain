@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Conference_Booking_domain.Domain;
 using Conference_Booking_domain.Enums;
 using Conference_Booking_domain.Logic;
+using Conference_Booking.API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.MapControllers();
 
 app.Run();
