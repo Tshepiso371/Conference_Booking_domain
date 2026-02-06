@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Conference_Booking_domain.Data;
 using Conference_Booking_domain.Domain;
+using Conference_Booking.API.DTOs;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Conference_Booking.API.Controllers
 {
@@ -12,6 +15,7 @@ namespace Conference_Booking.API.Controllers
 
         public RoomsController(SeedData seedData)
         {
+            // Load static room data
             _rooms = seedData.SeedRooms();
         }
 
@@ -19,17 +23,35 @@ namespace Conference_Booking.API.Controllers
         [HttpGet]
         public IActionResult GetAllRooms()
         {
-            return Ok(_rooms);
+            // Map domain objects → DTOs
+            var response = _rooms.Select((room, index) => new RoomResponseDto
+            {
+                Id = index,              // API-facing ID
+                Name = room.Name,
+                Capacity = (int)room.Capacity
+            });
+
+            return Ok(response);
         }
 
         // GET: api/rooms/{id}
         [HttpGet("{id}")]
         public IActionResult GetRoom(int id)
         {
+            // Resource existence check (allowed)
             if (id < 0 || id >= _rooms.Count)
                 return NotFound("Room not found.");
 
-            return Ok(_rooms[id]);
+            var room = _rooms[id];
+
+            var response = new RoomResponseDto
+            {
+                Id = id,
+                Name = room.Name,
+                Capacity = (int)room.Capacity
+            };
+
+            return Ok(response);
         }
     }
 }
