@@ -3,6 +3,7 @@ using Conference_Booking_domain.Data;
 using Conference_Booking_domain.Domain;
 using Conference_Booking.API.DTOs;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Conference_Booking.API.Controllers
 {
@@ -14,6 +15,7 @@ namespace Conference_Booking.API.Controllers
 
         public RoomsController(SeedData seedData)
         {
+            // Load static room data
             _rooms = seedData.SeedRooms();
         }
 
@@ -21,13 +23,13 @@ namespace Conference_Booking.API.Controllers
         [HttpGet]
         public IActionResult GetAllRooms()
         {
-            var response = _rooms
-                .Select((room, index) => new RoomResponseDto
-                {
-                    Index = index,
-                    Name = room.Name,
-                    Capacity = (int)room.Capacity
-                });
+            // Map domain objects → DTOs
+            var response = _rooms.Select((room, index) => new RoomResponseDto
+            {
+                Id = index,              // API-facing ID
+                Name = room.Name,
+                Capacity = (int)room.Capacity
+            });
 
             return Ok(response);
         }
@@ -36,6 +38,7 @@ namespace Conference_Booking.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetRoom(int id)
         {
+            // Resource existence check (allowed)
             if (id < 0 || id >= _rooms.Count)
                 return NotFound("Room not found.");
 
@@ -43,7 +46,7 @@ namespace Conference_Booking.API.Controllers
 
             var response = new RoomResponseDto
             {
-                Index = id,
+                Id = id,
                 Name = room.Name,
                 Capacity = (int)room.Capacity
             };
