@@ -8,13 +8,22 @@ using Conference_Booking_domain.Domain;
 using Conference_Booking_domain.Enums;
 using Conference_Booking_domain.Logic;
 using Conference_Booking.API.Middleware;
+using Conference_Booking.API.Auth;
+using Conference_Booking.API.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Register services
+builder.Services.AddDbContext<AppDbContext>(options =>options.UseSqlite("Data source=identity.db"));
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 // Register application services
@@ -23,6 +32,12 @@ builder.Services.AddSingleton<SeedData>();
 builder.Services.AddScoped<BookingManager>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 // HTTP pipeline
 if (app.Environment.IsDevelopment())
