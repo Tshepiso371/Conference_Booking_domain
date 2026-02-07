@@ -19,40 +19,54 @@ namespace Conference_Booking.API.Middleware
             {
                 await _next(context);
             }
-            catch (BookingConflictException ex)
+            catch (Exception ex)
             {
-                await HandleException(context, HttpStatusCode.UnprocessableEntity, ex.Message);
-            }
-            catch (BookingNotFoundException ex)
-            {
-                await HandleException(context, HttpStatusCode.NotFound, ex.Message);
-            }
-            catch (BookingException ex)
-            {
-                await HandleException(context, HttpStatusCode.UnprocessableEntity, ex.Message);
-            }
-            catch (Exception)
-            {
-                await HandleException(
-                    context,
-                    HttpStatusCode.InternalServerError,
-                    "An unexpected error occurred."
-                );
+                await HandleExceptionAsync(context, ex);
             }
         }
 
-        private static async Task HandleException(
+        private static async Task HandleExceptionAsync(
             HttpContext context,
-            HttpStatusCode statusCode,
-            string message)
+            Exception exception)
         {
-            context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int)statusCode;
+            HttpStatusCode statusCode;
+            ErrorCategory category;
+            string message;
 
-            var response = new ErrorResponse
+            switch (exception)
             {
-                StatusCode = context.Response.StatusCode,
-                Message = message
+                case BookingConflictException:
+                    statusCode = HttpStatusCode.UnprocessableEntity;
+                    category = ErrorCategory.BusinessRuleViolation;
+                    message = exception.Message;
+                    break;
+
+                case BookingNotFoundException:
+                    statusCode = HttpStatusCode.NotFound;
+                    category = ErrorCategory.BusinessRuleViolation;
+                    message = exception.Message;
+                    break;
+
+                case BookingException:
+                    statusCode = HttpStatusCode.UnprocessableEntity;
+                    category = ErrorCategory.BusinessRuleViolation;
+                    message = exception.Message;
+                    break;
+
+                default:
+                    statusCode = HttpStatusCode.InternalServerError;
+                    category = ErrorCategory.UnexpectedError;
+                    message = "An unexpected error occurred.";
+                    break;
+            }
+
+            context.Response.StatusCode = (int)statusCode;
+            context.Response.ContentType = "application/json";
+
+            var response = new APIErrorResponse
+            {
+                Message = message,
+                Category = category
             };
 
             await context.Response.WriteAsync(
