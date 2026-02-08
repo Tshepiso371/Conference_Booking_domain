@@ -1,8 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Conference_Booking.API.DTOs;
 using Conference_Booking_domain.Logic;
-using System.Linq;
-using System.Threading.Tasks;
+using Conference_Booking_domain.Domain;
 
 namespace Conference_Booking.API.Controllers
 {
@@ -17,57 +17,46 @@ namespace Conference_Booking.API.Controllers
             _bookingManager = bookingManager;
         }
 
-        // POST: api/bookings
+        //  Employee OR Receptionist can create bookings
+        [Authorize(Roles = "Employee,Receptionist")]
         [HttpPost]
         public async Task<IActionResult> CreateBooking(
             [FromBody] BookingCreateRequestDto request)
         {
-            // API-boundary validation
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            // Domain logic (exceptions bubble to middleware)
             var booking = await _bookingManager.CreateBookingAsync(
                 request.RoomIndex,
                 request.Start,
                 request.End
             );
 
-            // Map domain → response DTO
-            var response = new BookingResponseDto
-            {
-                RoomName = booking.Room.Name,
-                Start = booking.StartTime,
-                End = booking.EndTime,
-                Status = booking.Status.ToString()
-            };
-
-            return Ok(response);
+            return Ok(booking);
         }
 
-        // GET: api/bookings
+        //  Admin only — view all bookings
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetBookings()
         {
             var bookings = await _bookingManager.GetAllBookingsAsync();
-
-            var response = bookings.Select(b => new BookingResponseDto
-            {
-                RoomName = b.Room.Name,
-                Start = b.StartTime,
-                End = b.EndTime,
-                Status = b.Status.ToString()
-            });
-
-            return Ok(response);
+            return Ok(bookings);
         }
 
-        // POST: api/bookings/{id}/cancel
+        // Employee only — cancel own booking
+        [Authorize(Roles = "Employee")]
         [HttpPost("{id}/cancel")]
         public async Task<IActionResult> CancelBooking(int id)
         {
             await _bookingManager.CancelBookingAsync(id);
             return Ok("Booking cancelled.");
+        }
+
+        // Admin only — resolve conflicts
+        [Authorize(Roles = "Admin")]
+        [HttpPost("{id}/resolve")]
+        public async Task<IActionResult> ResolveConflict(int id)
+        {
+            await _bookingManager.ResolveConflictAsync(id);
+            return Ok("Conflict resolved.");
         }
     }
 }

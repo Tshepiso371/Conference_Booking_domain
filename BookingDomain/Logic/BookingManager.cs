@@ -65,6 +65,18 @@ namespace Conference_Booking_domain.Logic
 
             bookings[index].Cancel();
             await _repository.SaveAsync(bookings);
+        
+        }
+
+        public async Task ResolveConflictAsync(int index)
+        {
+            var bookings = await _repository.LoadAsync();
+
+            if (index < 0 || index >= bookings.Count)
+                throw new BookingException("Booking not found.");
+
+            bookings[index].Confirm();
+            await _repository.SaveAsync(bookings);
         }
     }
 }
