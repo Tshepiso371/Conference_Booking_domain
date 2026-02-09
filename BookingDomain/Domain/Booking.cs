@@ -9,10 +9,13 @@ using Conference_Booking_domain.Enums;
     private DateTime endTime;
     private BookingStatus status;
 
+    public int Id { get; private set; }
     public ConferenceRoom Room => room;
     public DateTime StartTime => startTime;
     public DateTime EndTime => endTime;
     public BookingStatus Status => status;
+
+    private Booking() { } 
 
     public Booking(ConferenceRoom room, DateTime start, DateTime end)
 {

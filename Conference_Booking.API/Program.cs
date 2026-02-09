@@ -83,6 +83,8 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddSingleton<BookingRepository>();
 builder.Services.AddSingleton<SeedData>();
 builder.Services.AddScoped<BookingManager>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 

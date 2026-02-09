@@ -5,9 +5,12 @@ namespace Conference_Booking_domain.Domain;
 {
     private string name;
     private RoomCapacity capacity;
-
+      
+      public int Id { get; private set; }
     public string Name => name;
     public RoomCapacity Capacity => capacity;
+
+    private ConferenceRoom() { }
 
 
     public ConferenceRoom(string name, RoomCapacity capacity)

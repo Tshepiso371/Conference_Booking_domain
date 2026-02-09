@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Conference_Booking.API.Auth;
+using System.ComponentModel.DataAnnotations.Schema;
+using Conference_Booking_domain.Domain;
 
 namespace Conference_Booking.API.Data
 {
@@ -11,6 +13,7 @@ namespace Conference_Booking.API.Data
 
         }
 
-        // To add later 
+    public DbSet<Booking> Bookings {get;set;}
+    public DbSet<ConferenceRoom> ConferenceRooms {get;set;}
     }
 }
