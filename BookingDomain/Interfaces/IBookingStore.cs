@@ -9,5 +9,6 @@ namespace Conference_Booking_domain.Interfaces
         Task<List<Booking>> GetAllAsync();
         Task AddAsync(Booking booking);
         Task SaveChangesAsync(Booking booking);
+        Task UpdateAsync(Booking booking);
     }
 }

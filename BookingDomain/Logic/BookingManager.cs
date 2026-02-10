@@ -51,5 +51,30 @@ namespace Conference_Booking_domain.Logic
         {
             return await _bookingStore.GetAllAsync();
         }
+
+        public async Task CancelBookingAsync(int bookingId)
+        {
+            var bookings = await _bookingStore.GetAllAsync();
+            var booking = bookings.FirstOrDefault(b => b.Id == bookingId)
+                ?? throw new BookingException("Booking not found.");
+
+            booking.Cancel();
+            await _bookingStore.UpdateAsync(booking);
+        
+        }
+
+        public async Task ResolveConflictAsync(int bookingId)
+{
+    var bookings = await _bookingStore.GetAllAsync();
+
+    var booking = bookings.FirstOrDefault(b => b.Id == bookingId);
+
+    if (booking == null)
+        throw new BookingNotFoundException("Booking not found.");
+
+    booking.Confirm();
+
+    await _bookingStore.UpdateAsync(booking);
+}
     }
 }
