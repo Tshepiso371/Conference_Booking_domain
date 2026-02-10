@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Conference_Booking.API.Stores
 {
-    public class BookingStore : IBookingStore
+    public class BookingStore : IBookingStore 
     {
         private readonly AppDbContext _context;
 

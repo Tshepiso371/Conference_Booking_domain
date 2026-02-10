@@ -10,9 +10,9 @@ namespace Conference_Booking.API.Data
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
+            
         }
-
-        // :white_check_mark: REQUIRED DbSets
+          
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<ConferenceRoom> ConferenceRooms { get; set; }
     }
