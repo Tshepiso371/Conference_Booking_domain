@@ -17,6 +17,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
+using Conference_Booking.API.Stores;  
+using Conference_Booking_domain.Interfaces;  
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,9 +82,12 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Register application services
-builder.Services.AddSingleton<BookingRepository>();
-builder.Services.AddSingleton<SeedData>();
+builder.Services.AddScoped<IBookingStore, BookingStore>();
+builder.Services.AddScoped<IRoomStore, RoomStore>();
 builder.Services.AddScoped<BookingManager>();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
