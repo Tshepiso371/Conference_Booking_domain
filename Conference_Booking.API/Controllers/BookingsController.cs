@@ -8,6 +8,7 @@ namespace Conference_Booking.API.Controllers
 {
     [ApiController]
     [Route("api/bookings")]
+    [Authorize]
     public class BookingsController : ControllerBase
     {
         private readonly BookingManager _bookingManager;

@@ -3534,19 +3534,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Training Center 1\\.nuget\\packages\\": {}
+    "C:\\Users\\thaba\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Training Center 1\\Downloads\\conference_booking_domain\\Conference_Booking_domain\\Conference_Booking.API\\Conference_Booking.API.csproj",
+      "projectUniqueName": "C:\\Users\\thaba\\Documents\\Conference_Booking_Domain\\Conference_Booking_domain\\Conference_Booking.API\\Conference_Booking.API.csproj",
       "projectName": "Conference_Booking.API",
-      "projectPath": "C:\\Users\\Training Center 1\\Downloads\\conference_booking_domain\\Conference_Booking_domain\\Conference_Booking.API\\Conference_Booking.API.csproj",
-      "packagesPath": "C:\\Users\\Training Center 1\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Training Center 1\\Downloads\\conference_booking_domain\\Conference_Booking_domain\\Conference_Booking.API\\obj\\",
+      "projectPath": "C:\\Users\\thaba\\Documents\\Conference_Booking_Domain\\Conference_Booking_domain\\Conference_Booking.API\\Conference_Booking.API.csproj",
+      "packagesPath": "C:\\Users\\thaba\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\thaba\\Documents\\Conference_Booking_Domain\\Conference_Booking_domain\\Conference_Booking.API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Training Center 1\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\thaba\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -3558,8 +3558,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Training Center 1\\Downloads\\conference_booking_domain\\Conference_Booking_domain\\BookingDomain\\BookingDomain.csproj": {
-              "projectPath": "C:\\Users\\Training Center 1\\Downloads\\conference_booking_domain\\Conference_Booking_domain\\BookingDomain\\BookingDomain.csproj"
+            "C:\\Users\\thaba\\Documents\\Conference_Booking_Domain\\Conference_Booking_domain\\BookingDomain\\BookingDomain.csproj": {
+              "projectPath": "C:\\Users\\thaba\\Documents\\Conference_Booking_Domain\\Conference_Booking_domain\\BookingDomain\\BookingDomain.csproj"
             }
           }
         }
