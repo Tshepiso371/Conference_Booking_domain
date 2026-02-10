@@ -1,82 +1,55 @@
-using Conference_Booking_domain.Domain;
-using Conference_Booking_domain.Persistence;
 using Conference_Booking_domain.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Conference_Booking_domain.Domain;
+using Conference_Booking_domain.Interfaces;
+
+
 
 namespace Conference_Booking_domain.Logic
 {
     public class BookingManager
     {
-        private readonly BookingRepository _repository;
-        private readonly List<ConferenceRoom> _rooms;
+        private readonly IBookingStore _bookingStore;
+        private readonly IRoomStore _roomStore;
 
-        public BookingManager(BookingRepository repository, SeedData seedData)
+        public BookingManager(
+            IBookingStore bookingStore,
+            IRoomStore roomStore)
         {
-            _repository = repository;
-            _rooms = seedData.SeedRooms();
+            _bookingStore = bookingStore;
+            _roomStore = roomStore;
         }
 
         public async Task<Booking> CreateBookingAsync(
-            int roomIndex,
+            int roomId,
             DateTime start,
             DateTime end)
         {
-            if (roomIndex < 0 || roomIndex >= _rooms.Count)
-                throw new BookingException("Invalid room selection.");
+            var room = await _roomStore.GetByIdAsync(roomId)
+                ?? throw new BookingException("Room not found.");
 
             if (start >= end)
-                throw new BookingException("Start time must be before end time.");
+                throw new BookingException("Invalid time range.");
 
-            var room = _rooms[roomIndex];
-            var bookings = await _repository.LoadAsync();
+            var bookings = await _bookingStore.GetAllAsync();
 
             bool overlap = bookings.Any(b =>
-                b.Room.Name == room.Name &&
+                b.Room.Id == room.Id &&
                 start < b.EndTime &&
-                end > b.StartTime
-            );
+                end > b.StartTime);
 
             if (overlap)
-                throw new BookingException("Room already booked for that time.");
+                throw new BookingException("Room already booked.");
 
-            Booking booking = new Booking(room, start, end);
+            var booking = new Booking(room, start, end);
             booking.Confirm();
 
-            bookings.Add(booking);
-            await _repository.SaveAsync(bookings);
-
+            await _bookingStore.AddAsync(booking);
             return booking;
         }
 
         public async Task<List<Booking>> GetAllBookingsAsync()
         {
-            return await _repository.LoadAsync();
-        }
-
-        public async Task CancelBookingAsync(int index)
-        {
-            var bookings = await _repository.LoadAsync();
-
-            if (index < 0 || index >= bookings.Count)
-                throw new BookingException("Booking not found.");
-
-            bookings[index].Cancel();
-            await _repository.SaveAsync(bookings);
-        
-        }
-
-        public async Task ResolveConflictAsync(int index)
-        {
-            var bookings = await _repository.LoadAsync();
-
-            if (index < 0 || index >= bookings.Count)
-                throw new BookingException("Booking not found.");
-
-            bookings[index].Confirm();
-            await _repository.SaveAsync(bookings);
+            return await _bookingStore.GetAllAsync();
         }
     }
 }

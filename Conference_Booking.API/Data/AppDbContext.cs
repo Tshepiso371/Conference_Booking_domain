@@ -13,7 +13,17 @@ namespace Conference_Booking.API.Data
 
         }
 
-    public DbSet<Booking> Bookings {get;set;}
-    public DbSet<ConferenceRoom> ConferenceRooms {get;set;}
+    public DbSet<Booking> Bookinngs => Set<Booking>();
+    public DbSet<ConferenceRoom> ConferenceRooms => Set<ConferenceRoom>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Booking>()
+            .HasOne(b => b.Room)
+            .WithMany()
+            .IsRequired();
+    }
     }
 }
