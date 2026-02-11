@@ -12,9 +12,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --------------------
-// Database + Identity
-// --------------------
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(
         builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -24,9 +22,7 @@ builder.Services
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-// --------------------
-// Authentication (JWT)
-// --------------------
+
 builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -46,9 +42,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// --------------------
-// Application Services
-// --------------------
+
 builder.Services.AddScoped<IBookingStore, BookingStore>();
 builder.Services.AddScoped<IRoomStore, RoomStore>();
 builder.Services.AddScoped<BookingManager>();
@@ -56,9 +50,7 @@ builder.Services.AddScoped<BookingManager>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// --------------------
-// Swagger + Auth
-// --------------------
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
@@ -89,18 +81,14 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// --------------------
-// Apply migrations FIRST
-// --------------------
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
 }
 
-// --------------------
-// Seed Identity AFTER DB exists
-// --------------------
+
 await IdentitySeeder.SeedAsync(app.Services);
 
 using (var scope = app.Services.CreateScope())
@@ -110,9 +98,7 @@ using (var scope = app.Services.CreateScope())
     await SeedData.SeedAsync(context);
 }
 
-// --------------------
-// HTTP Pipeline
-// --------------------
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

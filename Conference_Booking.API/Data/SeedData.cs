@@ -10,9 +10,7 @@ namespace Conference_Booking.API.Data
         {
             await context.Database.MigrateAsync();
 
-            // ----------------------
-            // ROOMS
-            // ----------------------
+            
             if (!context.ConferenceRooms.Any())
         {
        var activeRoom = new ConferenceRoom(
@@ -32,9 +30,7 @@ namespace Conference_Booking.API.Data
     context.ConferenceRooms.AddRange(activeRoom, inactiveRoom);
     await context.SaveChangesAsync();
      }
-            // ----------------------
-            // BOOKINGS
-            // ----------------------
+            
             if (!context.Bookings.Any())
             {
                 var room = await context.ConferenceRooms.FirstAsync(r => r.IsActive);
@@ -45,7 +41,7 @@ namespace Conference_Booking.API.Data
                     DateTime.UtcNow.AddHours(2)
                 );
 
-                booking.Confirm(); // Non-default status
+                booking.Confirm(); 
 
                 context.Bookings.Add(booking);
                 await context.SaveChangesAsync();
