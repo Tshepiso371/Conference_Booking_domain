@@ -12,19 +12,25 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// 1. Database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// 2. Identity
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-
+// 3. Services
 builder.Services.AddScoped<TokenService>();
 
+builder.Services.AddScoped<IBookingStore, BookingStore>();
+builder.Services.AddScoped<IRoomStore, RoomStore>();
+builder.Services.AddScoped<BookingManager>();
+
+// 4. JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -42,14 +48,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddAuthorization(); 
 
-builder.Services.AddScoped<IBookingStore, BookingStore>();
-builder.Services.AddScoped<IRoomStore, RoomStore>();
-builder.Services.AddScoped<BookingManager>();
-
+// 5. Controllers + Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -105,13 +108,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
-
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.MapControllers(); 
 
 app.Run();
