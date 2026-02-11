@@ -103,6 +103,13 @@ using (var scope = app.Services.CreateScope())
 // --------------------
 await IdentitySeeder.SeedAsync(app.Services);
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    await SeedData.SeedAsync(context);
+}
+
 // --------------------
 // HTTP Pipeline
 // --------------------

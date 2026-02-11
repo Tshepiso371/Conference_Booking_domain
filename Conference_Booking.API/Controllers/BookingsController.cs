@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Conference_Booking.API.DTOs;
+using Conference_Booking.API.Data;
 using Conference_Booking_domain.Logic;
 using Conference_Booking_domain.Domain;
 

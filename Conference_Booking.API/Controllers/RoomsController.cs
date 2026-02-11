@@ -1,33 +1,30 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Conference_Booking_domain.Data;
 using Conference_Booking.API.DTOs;
-using System.Linq;
-using Conference_Booking_domain.Domain;
-using System.Collections.Generic;
-
+using Conference_Booking_domain.Interfaces;
 
 namespace Conference_Booking.API.Controllers
 {
     [ApiController]
     [Route("api/rooms")]
-    [Authorize] //  Any authenticated user
+    [Authorize]
     public class RoomsController : ControllerBase
     {
-        private readonly List<ConferenceRoom> _rooms;
+        private readonly IRoomStore _roomStore;
 
-        public RoomsController(SeedData seedData)
+        public RoomsController(IRoomStore roomStore)
         {
-            _rooms = seedData.SeedRooms();
+            _roomStore = roomStore;
         }
 
-        // GET: api/rooms
         [HttpGet]
-        public IActionResult GetAllRooms()
+        public async Task<IActionResult> GetAllRooms()
         {
-            var response = _rooms.Select((room, index) => new RoomResponseDto
+            var rooms = await _roomStore.GetAllAsync();
+
+            var response = rooms.Select(room => new RoomResponseDto
             {
-                Id = index,
+                Id = room.Id,
                 Name = room.Name,
                 Capacity = (int)room.Capacity
             });
@@ -35,15 +32,17 @@ namespace Conference_Booking.API.Controllers
             return Ok(response);
         }
 
-        // GET: api/rooms/{id}
         [HttpGet("{id}")]
-        public IActionResult GetRoom(int id)
+        public async Task<IActionResult> GetRoom(int id)
         {
-            var room = _rooms[id];
+            var room = await _roomStore.GetByIdAsync(id);
+
+            if (room == null)
+                return NotFound();
 
             var response = new RoomResponseDto
             {
-                Id = id,
+                Id = room.Id,
                 Name = room.Name,
                 Capacity = (int)room.Capacity
             };
