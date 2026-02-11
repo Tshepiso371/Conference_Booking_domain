@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Training Center 1\\.nuget\\packages\\": {}
+    "C:\\Users\\thaba\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Training Center 1\\Downloads\\conference_booking_domain\\Conference_Booking_domain\\BookingDomain\\BookingDomain.csproj",
+      "projectUniqueName": "C:\\Users\\thaba\\Documents\\Conference_Booking_Domain\\Conference_Booking_domain\\BookingDomain\\BookingDomain.csproj",
       "projectName": "BookingDomain",
-      "projectPath": "C:\\Users\\Training Center 1\\Downloads\\conference_booking_domain\\Conference_Booking_domain\\BookingDomain\\BookingDomain.csproj",
-      "packagesPath": "C:\\Users\\Training Center 1\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Training Center 1\\Downloads\\conference_booking_domain\\Conference_Booking_domain\\BookingDomain\\obj\\",
+      "projectPath": "C:\\Users\\thaba\\Documents\\Conference_Booking_Domain\\Conference_Booking_domain\\BookingDomain\\BookingDomain.csproj",
+      "packagesPath": "C:\\Users\\thaba\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\thaba\\Documents\\Conference_Booking_Domain\\Conference_Booking_domain\\BookingDomain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Training Center 1\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\thaba\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"

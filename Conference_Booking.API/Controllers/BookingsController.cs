@@ -4,6 +4,7 @@ using Conference_Booking.API.DTOs;
 using Conference_Booking.API.Data;
 using Conference_Booking_domain.Logic;
 using Conference_Booking_domain.Domain;
+using System.Security.AccessControl;
 
 namespace Conference_Booking.API.Controllers
 {
@@ -26,7 +27,7 @@ namespace Conference_Booking.API.Controllers
             [FromBody] BookingCreateRequestDto request)
         {
             var booking = await _bookingManager.CreateBookingAsync(
-                request.RoomIndex,
+                request.RoomId,
                 request.Start,
                 request.End
             );
@@ -60,5 +61,32 @@ namespace Conference_Booking.API.Controllers
             await _bookingManager.ResolveConflictAsync(id);
             return Ok("Conflict resolved.");
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchBookings(
+            [FromQuery] string? room,
+            [FromQuery] string? location,
+            [FromQuery] DateTime? start,
+            [FromQuery] DateTime? end,
+            [FromQuery] bool? activeRooms,
+            [FromQuery] string? sortBy = "date",
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
+        {
+            var result = await _bookingManager.GetBookingAsync(
+                room,
+                location,
+                start,
+                end,
+                activeRooms,
+                sortBy,
+                page,
+                pageSize
+            );
+
+            return ok(result);
+        }
+
     }
 }
