@@ -8,12 +8,16 @@ using Conference_Booking_domain.Enums;
     private DateTime startTime;
     private DateTime endTime;
     private BookingStatus status;
+    private DateTime createdAt;
+    private DateTime cancelledAt;
 
     public int Id { get; private set; }
     public ConferenceRoom Room => room;
     public DateTime StartTime => startTime;
     public DateTime EndTime => endTime;
     public BookingStatus Status => status;
+    public DateTime CreatedAt => createdAt;
+    public DateTime CancelledAt => cancelledAt;
 
     private Booking() { } 
 
@@ -30,7 +34,11 @@ using Conference_Booking_domain.Enums;
     this.room = room;
     startTime = start;
     endTime = end;
+    
+    createdAt = DateTime.UtcNow;
     status = BookingStatus.Available;
+
+     
 }
 
 
@@ -48,5 +56,6 @@ using Conference_Booking_domain.Enums;
             throw new InvalidOperationException("Booking is not active.");
 
         status = BookingStatus.Available;
+        cancelledAt = DateTime.UtcNow;
     }
 }
