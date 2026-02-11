@@ -9,7 +9,7 @@ using Conference_Booking_domain.Enums;
     private DateTime endTime;
     private BookingStatus status;
     private DateTime createdAt;
-    private DateTime cancelledAt;
+    private DateTime? cancelledAt;
 
     public int Id { get; private set; }
     public ConferenceRoom Room => room;
@@ -17,7 +17,7 @@ using Conference_Booking_domain.Enums;
     public DateTime EndTime => endTime;
     public BookingStatus Status => status;
     public DateTime CreatedAt => createdAt;
-    public DateTime CancelledAt => cancelledAt;
+    public DateTime? CancelledAt => cancelledAt;
 
     private Booking() { } 
 
@@ -35,10 +35,9 @@ using Conference_Booking_domain.Enums;
     startTime = start;
     endTime = end;
     
-    createdAt = DateTime.UtcNow;
+    createdAt = DateTime.UtcNow; 
     status = BookingStatus.Available;
-
-     
+   
 }
 
 

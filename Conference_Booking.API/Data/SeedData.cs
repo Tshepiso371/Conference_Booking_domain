@@ -14,16 +14,24 @@ namespace Conference_Booking.API.Data
             // ROOMS
             // ----------------------
             if (!context.ConferenceRooms.Any())
-            {
-                var activeRoom = new ConferenceRoom("Room A", RoomCapacity.Twenty);
-                var inactiveRoom = new ConferenceRoom("Room B", RoomCapacity.Forty);
+        {
+       var activeRoom = new ConferenceRoom(
+        "Room A",
+        RoomCapacity.Twenty,
+        "First Floor",
+        true
+    );
 
-                inactiveRoom.SetInactive(); // if you don't have this, we’ll fix it below
+    var inactiveRoom = new ConferenceRoom(
+        "Room B",
+        RoomCapacity.Forty,
+        "Second Floor",
+        false
+    );
 
-                context.ConferenceRooms.AddRange(activeRoom, inactiveRoom);
-                await context.SaveChangesAsync();
-            }
-
+    context.ConferenceRooms.AddRange(activeRoom, inactiveRoom);
+    await context.SaveChangesAsync();
+     }
             // ----------------------
             // BOOKINGS
             // ----------------------

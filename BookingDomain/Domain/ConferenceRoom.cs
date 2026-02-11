@@ -1,32 +1,35 @@
 using Conference_Booking_domain.Enums;
+
 namespace Conference_Booking_domain.Domain;
 
- public class ConferenceRoom
+public class ConferenceRoom
 {
-    private string name;
-    private RoomCapacity capacity;
-    private string location;
-    private bool isActive;
-      
-      public int Id { get; private set; }
-    public string Name => name;
-    public RoomCapacity Capacity => capacity;
-    public string Location {get; private set; }
-    public bool IsActive {get ; private set; } = true;
+    public int Id { get; private set; }
 
-    private ConferenceRoom() { }
+    public string Name { get; private set; }
+    public RoomCapacity Capacity { get; private set; }
 
+    public string Location { get; private set; }
+    public bool IsActive { get; private set; }
 
-    public ConferenceRoom(string name, RoomCapacity capacity)
+    private ConferenceRoom() { } // Required by EF
+
+    public ConferenceRoom(string name, RoomCapacity capacity, string location, bool isActive = true)
     {
-        this.name = name;
-        this.capacity = capacity;
-        this.location = location;
-        isActive = true;
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Room name cannot be empty.");
+
+        if (string.IsNullOrWhiteSpace(location))
+            throw new ArgumentException("Location cannot be empty.");
+
+        Name = name;
+        Capacity = capacity;
+        Location = location;
+        IsActive = isActive;
     }
 
     public void SetInactive()
     {
-        isActive = false;
+        IsActive = false;
     }
 }

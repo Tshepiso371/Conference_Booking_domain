@@ -48,7 +48,7 @@ namespace Conference_Booking_domain.Persistence;
         {
             var parts = line.Split('|');
 
-            var room = new ConferenceRoom(parts[0], RoomCapacity.Ten);
+            var room = new ConferenceRoom (parts[0], RoomCapacity.Ten , "Loaded From File" , true);
             var start = DateTime.Parse(parts[1]);
             var end = DateTime.Parse(parts[2]);
             var status = parts[3];
