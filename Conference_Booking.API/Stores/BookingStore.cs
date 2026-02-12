@@ -1,5 +1,4 @@
 using Conference_Booking.API.Data;
-using Conference_Booking.API.DTOs;
 using Conference_Booking_domain.Domain;
 using Conference_Booking_domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +15,8 @@ namespace Conference_Booking.API.Stores
         }
 
         // -------------------------------------------------
-        // EXISTING METHODS (Used by BookingManager)
-        // -------------------------------------------------
-
+        // BASIC CRUD (Used by BookingManager)
+        
         public async Task<List<Booking>> GetAllAsync()
         {
             return await _context.Bookings
@@ -43,23 +41,24 @@ namespace Conference_Booking.API.Stores
             await _context.SaveChangesAsync();
         }
 
+        // ASSIGNMENT 3.3 — SEARCH + FILTER + PAGINATION
 
-        public async Task<PagedResultDto<BookingSummaryDto>> SearchAsync(
+        public async Task<(List<Booking> Items, int TotalCount)> SearchAsync(
             string? roomName,
             string? location,
             DateTime? start,
             DateTime? end,
             bool? activeRooms,
             string? sortBy,
-            int page = 1,
-            int pageSize = 10)
+            int page,
+            int pageSize)
         {
             IQueryable<Booking> query = _context.Bookings
                 .AsNoTracking()
                 .Include(b => b.Room);
 
-            
-            // Filtering (Database level)
+            // Filtering (Database Level)
+
             if (!string.IsNullOrWhiteSpace(roomName))
                 query = query.Where(b => b.Room.Name == roomName);
 
@@ -75,7 +74,6 @@ namespace Conference_Booking.API.Stores
             if (activeRooms.HasValue)
                 query = query.Where(b => b.Room.IsActive == activeRooms.Value);
 
-            
             // Sorting (Before Pagination)
 
             query = sortBy?.ToLower() switch
@@ -85,35 +83,18 @@ namespace Conference_Booking.API.Stores
                 _ => query.OrderBy(b => b.StartTime)
             };
 
-            
             // Total Count (Before Skip/Take)
 
             var totalCount = await query.CountAsync();
 
-            
-            // Pagination + Projection
+            // Pagination
 
             var items = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Select(b => new BookingSummaryDto
-                {
-                    BookingId = b.Id,
-                    RoomName = b.Room.Name,
-                    Location = b.Room.Location,
-                    Start = b.StartTime,
-                    End = b.EndTime,
-                    CreatedAt = b.CreatedAt
-                })
                 .ToListAsync();
 
-            return new PagedResultDto<BookingSummaryDto>
-            {
-                TotalCount = totalCount,
-                Page = page,
-                PageSize = pageSize,
-                Items = items
-            };
+            return (items, totalCount);
         }
     }
 }
