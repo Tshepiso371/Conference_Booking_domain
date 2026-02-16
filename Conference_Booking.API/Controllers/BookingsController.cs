@@ -44,43 +44,44 @@ namespace Conference_Booking.API.Controllers
         // SEARCH + FILTER + PAGINATION (Assignment 3.3)
         // ---------------------------
 
-        [HttpGet]
-[Authorize(Roles = "Admin")]
-public async Task<IActionResult> SearchBookings(
-    [FromQuery] string? room,
-    [FromQuery] string? location,
-    [FromQuery] DateTime? start,
-    [FromQuery] DateTime? end,
-    [FromQuery] bool? activeRooms,
-    [FromQuery] string? sortBy = "date",
-    [FromQuery] int page = 1,
-    [FromQuery] int pageSize = 10)
-{
-    var (bookings, totalCount) =
+        
+     [Authorize(Roles = "Admin")]
+     [HttpGet]
+     public async Task<IActionResult> SearchBookings(
+       [FromQuery] string? room,
+      [FromQuery] string? location,
+      [FromQuery] DateTime? start,
+      [FromQuery] DateTime? end,
+      [FromQuery] bool? activeRooms,
+      [FromQuery] string? sortBy = "date",
+       [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
+        {
+       var (bookings, totalCount) =
         await _bookingManager.SearchBookingsAsync(
             room, location, start, end,
             activeRooms, sortBy, page, pageSize);
 
-    var items = bookings.Select(b => new BookingSummaryDto
-    {
+       var items = bookings.Select(b => new BookingSummaryDto
+      {
         BookingId = b.Id,
         RoomName = b.Room.Name,
         Location = b.Room.Location,
         Start = b.StartTime,
         End = b.EndTime,
         CreatedAt = b.CreatedAt
-    });
+      });
 
-    var result = new PagedResultDto<BookingSummaryDto>
-    {
+      var result = new PagedResultDto<BookingSummaryDto>
+      {
         TotalCount = totalCount,
         Page = page,
         PageSize = pageSize,
         Items = items.ToList()
-    };
+       };
 
-    return Ok(result);
-}
+       return Ok(result);
+       }
         // ---------------------------
         // CANCEL BOOKING
         // ---------------------------
@@ -104,5 +105,14 @@ public async Task<IActionResult> SearchBookings(
             await _bookingManager.ResolveConflictAsync(id);
             return Ok("Conflict resolved.");
         }
+         
+        
+        [HttpGet("test")]
+        public IActionResult Test()
+        {
+            return Ok("bOOKING cONTROLLER works");
+        }
+        
+       
     }
 }

@@ -23,13 +23,6 @@ builder.Services
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-// 3. Services
-builder.Services.AddScoped<TokenService>();
-
-builder.Services.AddScoped<IBookingStore, BookingStore>();
-builder.Services.AddScoped<IRoomStore, RoomStore>();
-builder.Services.AddScoped<BookingManager>();
-
 // 4. JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -49,6 +42,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization(); 
+
+builder.Services.AddScoped<TokenService>();
+
+builder.Services.AddScoped<IBookingStore, BookingStore>();
+builder.Services.AddScoped<IRoomStore, RoomStore>();
+builder.Services.AddScoped<BookingManager>();
 
 // 5. Controllers + Swagger
 builder.Services.AddControllers();
@@ -80,6 +79,7 @@ builder.Services.AddSwaggerGen(options =>
             Array.Empty<string>()
         }
     });
+    
 });
 
 var app = builder.Build();
@@ -89,16 +89,10 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.Migrate();
-}
 
-
-await IdentitySeeder.SeedAsync(app.Services);
-
-using (var scope = app.Services.CreateScope())
-{
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<AppDbContext>();
-    await SeedData.SeedAsync(context);
+    await IdentitySeeder.SeedAsync(services);
+    await SeedData.SeedAsync(services.GetRequiredService<AppDbContext>());
 }
 
  
@@ -107,7 +101,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.MapGet("/test", () => "APIWorking");
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
