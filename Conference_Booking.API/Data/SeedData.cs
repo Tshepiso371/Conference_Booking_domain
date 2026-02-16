@@ -11,37 +11,47 @@ namespace Conference_Booking.API.Data
             await context.Database.MigrateAsync();
 
             
-            if (!context.ConferenceRooms.Any())
-        {
-       var activeRoom = new ConferenceRoom(
-        "Room A",
-        RoomCapacity.Twenty,
-        "First Floor",
-        true
-    );
 
-    var inactiveRoom = new ConferenceRoom(
-        "Room B",
-        RoomCapacity.Forty,
-        "Second Floor",
-        false
-    );
+            var existingRoomNames = await context.ConferenceRooms
+                .Select(r => r.Name)
+                .ToListAsync();
 
-    context.ConferenceRooms.AddRange(activeRoom, inactiveRoom);
-    await context.SaveChangesAsync();
-     }
-            
-            if (!context.Bookings.Any())
+            var roomsToSeed = new List<ConferenceRoom>
             {
-                var room = await context.ConferenceRooms.FirstAsync(r => r.IsActive);
+                new ConferenceRoom("Room A", RoomCapacity.Twenty, "First Floor", true),
+                new ConferenceRoom("Room B", RoomCapacity.Forty, "Second Floor", false),
+                new ConferenceRoom("Room C", RoomCapacity.Sixty, "Cape Town", true),
+                new ConferenceRoom("Room D", RoomCapacity.Ten, "Cape Town", true),
+                new ConferenceRoom("Room E", RoomCapacity.Twenty, "Johannesburg", true),
+                new ConferenceRoom("Room F", RoomCapacity.Forty, "Durban", true)
+            };
+
+            foreach (var room in roomsToSeed)
+            {
+                if (!existingRoomNames.Contains(room.Name))
+                {
+                    context.ConferenceRooms.Add(room);
+                }
+            }
+
+            await context.SaveChangesAsync();
+
+            // ----------------------
+            // BOOKINGS
+            // ----------------------
+
+            if (!await context.Bookings.AnyAsync())
+            {
+                var activeRoom = await context.ConferenceRooms
+                    .FirstAsync(r => r.IsActive);
 
                 var booking = new Booking(
-                    room,
+                    activeRoom,
                     DateTime.UtcNow.AddHours(1),
                     DateTime.UtcNow.AddHours(2)
                 );
 
-                booking.Confirm(); 
+                booking.Confirm();
 
                 context.Bookings.Add(booking);
                 await context.SaveChangesAsync();

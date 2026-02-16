@@ -101,13 +101,13 @@ using (var scope = app.Services.CreateScope())
     await SeedData.SeedAsync(context);
 }
 
-
+ 
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.MapGet("/test", () => "APIWorking");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

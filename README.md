@@ -106,5 +106,36 @@ Safe LINQ usage
 Asynchronous file operations
 Separation of concerns
 
+## Booking Querying & Performance 
+
+### Pagination
+All booking list endpoints support pagination using:
+- page (default: 1)
+- pageSize (default: 10)
+
+The API returns total count, page metadata, and paged results.
+
+### Filtering
+Bookings can be filtered by:
+- Room name
+- Location
+- Date range
+- Active or inactive rooms
+
+All filtering is performed at the database level using LINQ-to-Entities.
+
+### Sorting
+Bookings can be sorted by:
+- Start date (default)
+- Room name
+- Creation time
+
+Sorting is applied before pagination.
+
+### Performance Considerations
+- AsNoTracking() is used for read-only queries
+- IQueryable is composed before execution
+- DTO projection avoids returning EF entities
+
 ## Author
 Tshepiso Mohlabane

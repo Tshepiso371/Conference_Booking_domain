@@ -7,7 +7,7 @@ namespace Conference_Booking.API.DTOs
     public class BookingCreateRequestDto
     {
         [Required]
-        public int RoomIndex { get; set; }
+        public int RoomId { get; set; }
 
         [Required]
         public DateTime Start { get; set; }

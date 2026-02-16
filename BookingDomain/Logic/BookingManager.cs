@@ -5,6 +5,7 @@ using Conference_Booking_domain.Logic;
 
 
 
+
 namespace Conference_Booking_domain.Logic
 {
     public class BookingManager
@@ -77,5 +78,29 @@ namespace Conference_Booking_domain.Logic
 
     await _bookingStore.UpdateAsync(booking);
 }
+
+ public async Task<(List<Booking> Items, int TotalCount)> SearchBookingsAsync(
+    string? room,
+    string? location,
+    DateTime? start,
+    DateTime? end,
+    bool? activeRooms,
+    string? sortBy,
+    int page,
+    int pageSize)
+{
+    return await _bookingStore.SearchAsync(
+        room,
+        location,
+        start,
+        end,
+        activeRooms,
+        sortBy,
+        page,
+        pageSize);
+}
+
+
+    
     }
 }
