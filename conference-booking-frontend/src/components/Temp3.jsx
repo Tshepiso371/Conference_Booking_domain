@@ -1,6 +1,6 @@
 import Button from "./Temp4";
 
-function BookingCard({ roomName, date, user }) {
+function BookingCard({ roomName, date, user,onDelete}) {
   return (
     <div className="card">
       <h3>{roomName}</h3>
@@ -8,7 +8,7 @@ function BookingCard({ roomName, date, user }) {
       <p>Booked by: {user}</p>
 
       <Button label="Edit" />
-      <Button label="Cancel" />
+      <Button label="Cancel"onClick={() => onDelete(id)}/>
     </div>
   );
 }

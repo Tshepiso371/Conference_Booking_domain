@@ -12,6 +12,11 @@ function App() {
     setBookings((prev) => [...prev, newBooking]); // immutable update
   }
 
+  function deleteBooking(id) {
+   setBookings((prev) => prev.filter((b) => b.id !== id
+  ));
+  }
+
   return (
     <div className="container">
       <h1>Conference Booking Dashboard</h1>
@@ -23,7 +28,9 @@ function App() {
       <BookingForm onAddBooking={addBooking} />
 
       {/* List */}
-      <BookingList bookings={bookings} />
+      <BookingList bookings={bookings} 
+      onDelete={deleteBooking}
+      />
     </div>
   );
 }
