@@ -19,7 +19,7 @@ function BookingForm({ onAddBooking }) {
       roomName,
       user,
       date,
-    };
+    }; 
 
     onAddBooking(newBooking);
 
