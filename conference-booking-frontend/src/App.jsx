@@ -13,9 +13,9 @@ function App() {
   }
 
   function deleteBooking(id) {
-   setBookings((prev) => prev.filter((b) => b.id !== id
-  ));
-  }
+    console.log("dELETING", id)
+  setBookings((prev) => prev.filter((b) => b.id !== id));
+}
 
   return (
     <div className="container">
@@ -29,8 +29,7 @@ function App() {
 
       {/* List */}
       <BookingList bookings={bookings} 
-      onDelete={deleteBooking}
-      />
+      onDelete={deleteBooking}/>
     </div>
   );
 }

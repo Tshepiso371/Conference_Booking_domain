@@ -1,6 +1,6 @@
 import BookingCard from "./Temp3"
 
-function BookingList({bookings,onDelete}) {
+function BookingList({ bookings, onDelete }) {
   return (
     <div className="booking-grid">
       {bookings.map((b) => (
@@ -10,8 +10,7 @@ function BookingList({bookings,onDelete}) {
           roomName={b.roomName}
           date={b.date}
           user={b.user}
-          onDelete={onDelete}
-
+          onDelete={() => onDelete(b.id)}
         />
       ))}
     </div>

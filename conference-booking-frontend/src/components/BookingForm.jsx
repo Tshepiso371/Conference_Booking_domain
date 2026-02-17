@@ -52,6 +52,15 @@ function BookingForm({ onAddBooking }) {
       />
 
       <Button label="Add Booking" />
+
+  <Button
+    label="Clear"
+    onClick={() => {
+    setRoomName("");
+    setUser("");
+    setDate("");
+  }}
+    />
     </form>
   );
 }
