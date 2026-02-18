@@ -1,4 +1,4 @@
-import BookingCard from "./Temp3"
+import BookingCard from "./BookingCard"
 
 function BookingList({ bookings, onDelete }) {
   return (

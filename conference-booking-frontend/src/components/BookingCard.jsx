@@ -1,4 +1,4 @@
-import Button from "./Temp4";
+import Button from "./Button";
 
 function BookingCard({ id , roomName, date, user, onDelete}) {
   return (

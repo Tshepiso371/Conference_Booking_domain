@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "./Temp4";
+import Button from "./Button";
 
 function BookingForm({ onAddBooking }) {
   const [roomName, setRoomName] = useState("");
@@ -51,15 +51,17 @@ function BookingForm({ onAddBooking }) {
         onChange={(e) => setDate(e.target.value)}
       />
 
-      <Button label="Add Booking" />
+      <button type="submit">Add booking</button>
 
   <Button
     label="Clear"
+    type="button"
     onClick={() => {
     setRoomName("");
     setUser("");
     setDate("");
-  }}
+  }
+}
     />
     </form>
   );

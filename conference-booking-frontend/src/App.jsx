@@ -4,12 +4,12 @@ import BookingForm from "./components/BookingForm";
 import { bookings as initialBookings } from "./Data/mockData";
 
 function App() {
-  // STATE (memory of the app)
+  // STATE 
   const [bookings, setBookings] = useState(initialBookings);
 
   // Add new booking
   function addBooking(newBooking) {
-    setBookings((prev) => [...prev, newBooking]); // immutable update
+    setBookings((prev) => [...prev, newBooking]); 
   }
 
   function deleteBooking(id) {
