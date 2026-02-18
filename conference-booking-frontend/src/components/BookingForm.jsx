@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Button from "./Button";
+import { rooms } from "../Data/mockData";
 
 function BookingForm({ onAddBooking }) {
   const [roomName, setRoomName] = useState("");
@@ -31,12 +32,18 @@ function BookingForm({ onAddBooking }) {
 
   return (
     <form onSubmit={handleSubmit} className="booking-form">
-      <input
-        type="text"
-        placeholder="Room Name"
-        value={roomName}
-        onChange={(e) => setRoomName(e.target.value)}
-      />
+      <select
+  value={roomName}
+  onChange={(e) => setRoomName(e.target.value)}
+>
+  <option value="">Select Room</option>
+
+  {rooms.map((room) => (
+    <option key={room} value={room}>
+      {room}
+    </option>
+  ))}
+</select>
 
       <input
         type="text"

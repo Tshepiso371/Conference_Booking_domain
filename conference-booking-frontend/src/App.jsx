@@ -9,25 +9,33 @@ function App() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [category , setCategory] = useState("All");
 
-  // Fetch bookings (async)
   useEffect(() => {
-    async function loadBookings() {
-      try {
-        setLoading(true);
-        setError("");
+  async function loadBookings() {
+    try {
+      setLoading(true);
+      setError("");
 
-        const data = await fetchAllBookings();
-        setBookings(data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
+      const data = await fetchAllBookings();
+
+      const filtered =
+        category === "All"
+          ? data
+          : data.filter((b) => b.category === category);
+
+      setBookings(filtered);
+
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    loadBookings();
-  }, []);
+  loadBookings();
+
+}, [category]);
 
   // Add new booking
   function addBooking(newBooking) {
@@ -76,11 +84,23 @@ function App() {
     <div className="container">
       <Heartbeat />
 
-      <h1>Conference Booking Dashboard</h1>
+      <h1> style={{ textAlign: "center"}}
+        Conference Booking Dashboard
+        </h1>
 
       <h2>Total Bookings: {bookings.length}</h2>
 
       <BookingForm onAddBooking={addBooking} />
+
+      <select
+        value={category}
+        onChange={(e) =>
+          setCategory(e.target.value)}
+          >
+          <option value="All">All</option>
+          <option value="Internal">Internal</option>
+          <option value="Client">Client</option>
+          </select>
 
       <BookingList bookings={bookings} onDelete={deleteBooking} />
     </div>

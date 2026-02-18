@@ -35,3 +35,10 @@ export const bookings = [
     user: "Lebo"
   }
 ];
+
+export const rooms = [
+  "Boardroom",
+  "Conference Hall",
+  "Meeting Room",
+  "Training Room"
+];

@@ -9,9 +9,9 @@ export async function fetchAllBookings() {
         reject("Server error. Please try again.");
       } else {
         resolve([
-          { id: 1, roomName: "Room A", user: "John", date: "2026-02-20", category: "Internal" },
-          { id: 2, roomName: "Room B", user: "Sarah", date: "2026-02-21", category: "Client" },
-          { id: 3, roomName: "Room C", user: "David", date: "2026-02-22", category: "Internal" }
+          { id: 1, roomName: "Boardroom", user: "John", date: "2026-02-20", category: "Internal" },
+          { id: 2, roomName: "Conference Hall", user: "Sarah", date: "2026-02-21", category: "Client" },
+          { id: 3, roomName: "Meeting Room", user: "David", date: "2026-02-22", category: "Internal" }
         ]);
       }
     }, delay);
