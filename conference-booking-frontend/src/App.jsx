@@ -3,6 +3,8 @@ import BookingList from "./components/BookingList";
 import BookingForm from "./components/BookingForm";
 import { fetchAllBookings } from "./services/bookingServices";
 import Heartbeat from "./components/Heartbeat";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 function App() {
   // STATE
@@ -57,7 +59,7 @@ function App() {
         const data = await fetchAllBookings();
         setBookings(data);
       } catch (err) {
-        setError(err);
+        setError(err.message || "Something went wrong");
       } finally {
         setLoading(false);
       }
@@ -81,10 +83,12 @@ function App() {
   }
 
   return (
+   <>
+    <Navbar />
     <div className="container">
       <Heartbeat />
 
-      <h1> style={{ textAlign: "center"}}
+      <h1 style={{ textAlign: "center"}}>
         Conference Booking Dashboard
         </h1>
 
@@ -104,6 +108,9 @@ function App() {
 
       <BookingList bookings={bookings} onDelete={deleteBooking} />
     </div>
+
+    <Footer />
+    </>
   );
 }
 

@@ -6,6 +6,7 @@ function BookingForm({ onAddBooking }) {
   const [roomName, setRoomName] = useState("");
   const [user, setUser] = useState("");
   const [date, setDate] = useState("");
+  
 
   function handleSubmit(e) {
     e.preventDefault();
