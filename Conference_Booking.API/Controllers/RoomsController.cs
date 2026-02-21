@@ -6,8 +6,8 @@ using Conference_Booking_domain.Interfaces;
 namespace Conference_Booking.API.Controllers
 {
     [ApiController]
-    [Route("api/rooms")]
-    [Authorize]
+    [Route("api/[controller]")]
+   // [Authorize]
     public class RoomsController : ControllerBase
     {
         private readonly IRoomStore _roomStore;

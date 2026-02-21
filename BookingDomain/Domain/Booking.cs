@@ -4,57 +4,52 @@ using Conference_Booking_domain.Enums;
 
  public class Booking
 {
-    private ConferenceRoom room;
-    private DateTime startTime;
-    private DateTime endTime;
-    private BookingStatus status;
-    private DateTime createdAt;
-    private DateTime? cancelledAt;
-
     public int Id { get; private set; }
-    public ConferenceRoom Room => room;
-    public DateTime StartTime => startTime;
-    public DateTime EndTime => endTime;
-    public BookingStatus Status => status;
-    public DateTime CreatedAt => createdAt;
-    public DateTime? CancelledAt => cancelledAt;
 
-    private Booking() { } 
+    public int RoomId { get; private set; }
+
+    public ConferenceRoom Room { get; private set; }
+
+    public DateTime StartTime { get; private set; }
+    public DateTime EndTime { get; private set; }
+    public BookingStatus Status { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime? CancelledAt { get; private set; }
+
+    private Booking() { }
 
     public Booking(ConferenceRoom room, DateTime start, DateTime end)
-{
-    
-    if (room == null)
-        throw new ArgumentNullException(nameof(room), "Booking must reference a room.");
+    {
+        if (room == null)
+            throw new ArgumentNullException(nameof(room));
 
-    
-    if (end <= start)
-        throw new ArgumentException("End time must be after start time.");
+        if (end <= start)
+            throw new ArgumentException("End must be after start.");
 
-    this.room = room;
-    startTime = start;
-    endTime = end;
-    
-    createdAt = DateTime.UtcNow; 
-    status = BookingStatus.Available;
-   
-}
+        Room = room;
+        RoomId = room.Id; 
 
+        StartTime = start;
+        EndTime = end;
+
+        CreatedAt = DateTime.UtcNow;
+        Status = BookingStatus.Available;
+    }
 
     public void Confirm()
     {
-        if (status == BookingStatus.Booked)
-            throw new InvalidOperationException("Booking already confirmed.");
+        if (Status == BookingStatus.Booked)
+            throw new InvalidOperationException("Already booked.");
 
-        status = BookingStatus.Booked;
+        Status = BookingStatus.Booked;
     }
 
     public void Cancel()
     {
-        if (status == BookingStatus.Available)
-            throw new InvalidOperationException("Booking is not active.");
+        if (Status == BookingStatus.Available)
+            throw new InvalidOperationException("Not active.");
 
-        status = BookingStatus.Available;
-        cancelledAt = DateTime.UtcNow;
+        Status = BookingStatus.Available;
+        CancelledAt = DateTime.UtcNow;
     }
 }

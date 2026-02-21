@@ -15,5 +15,17 @@ namespace Conference_Booking.API.Data
         // :white_check_mark: REQUIRED DbSets
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<ConferenceRoom> ConferenceRooms { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+   {
+    base.OnModelCreating(modelBuilder);
+
+    modelBuilder.Entity<Booking>()
+        .HasOne(b => b.Room)
+        .WithMany()
+        .HasForeignKey(b => b.RoomId);
+   }
     }
+
+    
 }

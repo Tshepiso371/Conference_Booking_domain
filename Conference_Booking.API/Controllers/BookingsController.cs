@@ -7,8 +7,8 @@ using Conference_Booking_domain.Interfaces;
 namespace Conference_Booking.API.Controllers
 {
     [ApiController]
-    [Route("api/bookings")]
-    [Authorize]
+    [Route("api/[controller]")]
+    //[Authorize]
     public class BookingsController : ControllerBase
     {
         private readonly BookingManager _bookingManager;
@@ -26,26 +26,33 @@ namespace Conference_Booking.API.Controllers
         // CREATE BOOKING
         // ---------------------------
 
-        [Authorize(Roles = "Employee,Receptionist")]
+        //[Authorize(Roles = "Employee,Receptionist")]
         [HttpPost]
-        public async Task<IActionResult> CreateBooking(
-            [FromBody] BookingCreateRequestDto request)
-        {
-            var booking = await _bookingManager.CreateBookingAsync(
-                request.RoomId,
-                request.Start,
-                request.End
-            );
+   public async Task<IActionResult> CreateBooking(
+    [FromBody] BookingCreateRequestDto request)
+{
+    try
+    {
+        var booking = await _bookingManager.CreateBookingAsync(
+            request.RoomId,
+            request.Start,
+            request.End
+        );
 
-            return Ok(booking);
-        }
+        return Ok(booking);
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(ex.Message);
+    }
+}
 
         // ---------------------------
         // SEARCH + FILTER + PAGINATION (Assignment 3.3)
         // ---------------------------
 
         [HttpGet]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public async Task<IActionResult> SearchBookings(
     [FromQuery] string? room,
     [FromQuery] string? location,
@@ -85,7 +92,7 @@ public async Task<IActionResult> SearchBookings(
         // CANCEL BOOKING
         // ---------------------------
 
-        [Authorize(Roles = "Employee")]
+        //[Authorize(Roles = "Employee")]
         [HttpPost("{id}/cancel")]
         public async Task<IActionResult> CancelBooking(int id)
         {
@@ -97,7 +104,7 @@ public async Task<IActionResult> SearchBookings(
         // RESOLVE CONFLICT
         // ---------------------------
 
-        [Authorize(Roles = "Admin")]
+      //  [Authorize(Roles = "Admin")]
         [HttpPost("{id}/resolve")]
         public async Task<IActionResult> ResolveConflict(int id)
         {
