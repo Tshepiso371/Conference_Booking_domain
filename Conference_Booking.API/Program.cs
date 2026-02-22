@@ -107,7 +107,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.MapGet("/test", () => "APIWorking");
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
