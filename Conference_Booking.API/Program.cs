@@ -82,6 +82,16 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("VitePolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .WithMethods("GET", "POST", "PUT", "DELETE");
+    });
+});
+
 var app = builder.Build();
 
 
@@ -110,11 +120,15 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("VitePolicy");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers(); 
+
+app.MapGet("/health", () => "Healthy");
 
 app.Run();

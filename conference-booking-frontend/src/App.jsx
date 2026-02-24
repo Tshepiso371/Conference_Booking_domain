@@ -5,6 +5,7 @@ import { fetchAllBookings } from "./services/bookingServices";
 import Heartbeat from "./components/Heartbeat";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import useBookings from "./hooks/useBookings";
 
 function App() {
   // STATE

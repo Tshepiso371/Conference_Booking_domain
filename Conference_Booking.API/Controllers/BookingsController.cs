@@ -7,8 +7,8 @@ using Conference_Booking_domain.Interfaces;
 namespace Conference_Booking.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    [Authorize]
+    [Route("api/bookings")]
+    //[Authorize]
     public class BookingsController : ControllerBase
     {
         private readonly BookingManager _bookingManager;
@@ -26,7 +26,7 @@ namespace Conference_Booking.API.Controllers
         // CREATE BOOKING
         // ---------------------------
 
-        [Authorize(Roles = "Employee,Receptionist")]
+       // [Authorize(Roles = "Employee,Receptionist")]
         [HttpPost]
    public async Task<IActionResult> CreateBooking(
     [FromBody] BookingCreateRequestDto request)
@@ -52,7 +52,7 @@ namespace Conference_Booking.API.Controllers
         // ---------------------------
 
         [HttpGet]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public async Task<IActionResult> SearchBookings(
     [FromQuery] string? room,
     [FromQuery] string? location,
@@ -92,7 +92,7 @@ public async Task<IActionResult> SearchBookings(
         // CANCEL BOOKING
         // ---------------------------
 
-        [Authorize(Roles = "Employee")]
+        //[Authorize(Roles = "Employee")]
         [HttpPost("{id}/cancel")]
         public async Task<IActionResult> CancelBooking(int id)
         {
@@ -104,7 +104,7 @@ public async Task<IActionResult> SearchBookings(
         // RESOLVE CONFLICT
         // ---------------------------
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost("{id}/resolve")]
         public async Task<IActionResult> ResolveConflict(int id)
         {

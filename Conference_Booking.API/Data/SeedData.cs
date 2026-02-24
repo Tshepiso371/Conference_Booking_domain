@@ -40,22 +40,47 @@ namespace Conference_Booking.API.Data
             // BOOKINGS
             // ----------------------
 
-            if (!await context.Bookings.AnyAsync())
+        if (!await context.Bookings.AnyAsync())
+     {
+               var activeRooms = await context.ConferenceRooms
+             .Where(r => r.IsActive)
+            .ToListAsync();
+
+          if (activeRooms.Count >= 3)
+         {
+            var bookings = new List<Booking>
             {
-                var activeRoom = await context.ConferenceRooms
-                    .FirstAsync(r => r.IsActive);
+            new Booking(activeRooms[0],
+                DateTime.UtcNow.AddHours(1),
+                DateTime.UtcNow.AddHours(2)),
 
-                var booking = new Booking(
-                    activeRoom,
-                    DateTime.UtcNow.AddHours(1),
-                    DateTime.UtcNow.AddHours(2)
-                );
+            new Booking(activeRooms[1],
+                DateTime.UtcNow.AddDays(1),
+                DateTime.UtcNow.AddDays(1).AddHours(2)),
 
-                booking.Confirm();
+            new Booking(activeRooms[2],
+                DateTime.UtcNow.AddDays(2),
+                DateTime.UtcNow.AddDays(2).AddHours(2)),
 
-                context.Bookings.Add(booking);
-                await context.SaveChangesAsync();
-            }
+            new Booking(activeRooms[0],
+                DateTime.UtcNow.AddDays(3),
+                DateTime.UtcNow.AddDays(3).AddHours(2)),
+
+            new Booking(activeRooms[1],
+                DateTime.UtcNow.AddDays(4),
+                DateTime.UtcNow.AddDays(4).AddHours(2))
+        };
+
+        foreach (var booking in bookings)
+        {
+            booking.Confirm();
+            context.Bookings.Add(booking);
         }
+
+        await context.SaveChangesAsync();
+       }
+    }  
+        }
+       }
+    
     }
-}

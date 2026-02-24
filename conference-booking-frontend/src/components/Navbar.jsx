@@ -1,7 +1,10 @@
+import ConnectionStatus from "./ConnectionStatus";
+
 function Navbar() {
   return (
     <nav className="navbar">
       <h2>Conference Bookings</h2>
+      <ConnectionStatus/>
       <div>
         <a href="#">Home</a>
         <a href="#">Bookings</a>
