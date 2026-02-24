@@ -1,19 +1,33 @@
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export async function fetchAllBookings() {
-  return new Promise((resolve, reject) => {
-    const delay = Math.random() * 2000 + 500; 
+  try {
+    const response = await fetch(`${BASE_URL}/bookings`);
 
-    setTimeout(() => {
-      const shouldFail = Math.random() < 0.2; 
+    if (!response.ok) {
+      throw new Error("Failed to fetch bookings");
+    }
 
-      if (shouldFail) {
-        reject("Server error. Please try again.");
-      } else {
-        resolve([
-          { id: 1, roomName: "Boardroom", user: "John", date: "2026-02-20", category: "Internal" },
-          { id: 2, roomName: "Conference Hall", user: "Sarah", date: "2026-02-21", category: "Client" },
-          { id: 3, roomName: "Meeting Room", user: "David", date: "2026-02-22", category: "Internal" }
-        ]);
-      }
-    }, delay);
-  });
+    const data = await response.json();
+
+    return data.items || data;
+
+  } catch (error) {
+    throw error.message || "Server error";
+  }
+}
+
+export async function cancelBooking(id) {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}/bookings/${id}/cancel`,
+    {
+      method: "POST",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to cancel booking");
+  }
+
+  return true;
 }

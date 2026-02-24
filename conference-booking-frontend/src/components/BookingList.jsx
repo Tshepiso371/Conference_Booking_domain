@@ -10,6 +10,7 @@ function BookingList({ bookings, onDelete }) {
     roomName={b.roomName}
     date={new Date(b.start).toLocaleString()}
     user={b.createdBy}
+    onDelete={deleteBooking}
   />
 ))}
     </div>
