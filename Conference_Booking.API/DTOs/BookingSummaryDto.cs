@@ -14,5 +14,7 @@ namespace Conference_Booking.API.DTOs
         public DateTime End {get; set;}
 
         public DateTime CreatedAt {get; set;}
+
+        public string CreatedBy {get; set;}
     }
 }

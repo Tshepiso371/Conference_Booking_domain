@@ -16,9 +16,11 @@ using Conference_Booking_domain.Enums;
     public DateTime CreatedAt { get; private set; }
     public DateTime? CancelledAt { get; private set; }
 
+    public string CreatedBy {get; private set; }
+
     private Booking() { }
 
-    public Booking(ConferenceRoom room, DateTime start, DateTime end)
+    public Booking(ConferenceRoom room, DateTime start, DateTime end, string createdBy)
     {
         if (room == null)
             throw new ArgumentNullException(nameof(room));
@@ -31,6 +33,8 @@ using Conference_Booking_domain.Enums;
 
         StartTime = start;
         EndTime = end;
+
+        CreatedBy = createdBy;
 
         CreatedAt = DateTime.UtcNow;
         Status = BookingStatus.Available;

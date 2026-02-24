@@ -49,27 +49,32 @@ namespace Conference_Booking.API.Data
           if (activeRooms.Count >= 3)
          {
             var bookings = new List<Booking>
-            {
-            new Booking(activeRooms[0],
-                DateTime.UtcNow.AddHours(1),
-                DateTime.UtcNow.AddHours(2)),
+{
+    new Booking(activeRooms[0],
+        DateTime.UtcNow.AddHours(1),
+        DateTime.UtcNow.AddHours(2),
+        "System"),
 
-            new Booking(activeRooms[1],
-                DateTime.UtcNow.AddDays(1),
-                DateTime.UtcNow.AddDays(1).AddHours(2)),
+    new Booking(activeRooms[1],
+        DateTime.UtcNow.AddDays(1),
+        DateTime.UtcNow.AddDays(1).AddHours(2),
+        "System"),
 
-            new Booking(activeRooms[2],
-                DateTime.UtcNow.AddDays(2),
-                DateTime.UtcNow.AddDays(2).AddHours(2)),
+    new Booking(activeRooms[2],
+        DateTime.UtcNow.AddDays(2),
+        DateTime.UtcNow.AddDays(2).AddHours(2),
+        "System"),
 
-            new Booking(activeRooms[0],
-                DateTime.UtcNow.AddDays(3),
-                DateTime.UtcNow.AddDays(3).AddHours(2)),
+    new Booking(activeRooms[0],
+        DateTime.UtcNow.AddDays(3),
+        DateTime.UtcNow.AddDays(3).AddHours(2),
+        "System"),
 
-            new Booking(activeRooms[1],
-                DateTime.UtcNow.AddDays(4),
-                DateTime.UtcNow.AddDays(4).AddHours(2))
-        };
+    new Booking(activeRooms[1],
+        DateTime.UtcNow.AddDays(4),
+        DateTime.UtcNow.AddDays(4).AddHours(2),
+        "System")
+};
 
         foreach (var booking in bookings)
         {
