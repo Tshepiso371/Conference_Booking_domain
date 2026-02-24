@@ -8,7 +8,7 @@ function Heartbeat() {
       setTime(new Date());
     }, 1000);
 
-    // CLEANUP (very important)
+    // CLEANUP 
     return () => {
       clearInterval(interval);
       console.log("Heartbeat stopped");

@@ -26,7 +26,7 @@ namespace Conference_Booking.API.Controllers
         // CREATE BOOKING
         // ---------------------------
 
-       // [Authorize(Roles = "Employee,Receptionist")]
+        //[Authorize(Roles = "Employee,Receptionist")]
         [HttpPost]
    public async Task<IActionResult> CreateBooking(
     [FromBody] BookingCreateRequestDto request)
