@@ -1,6 +1,6 @@
 import BookingCard from "./BookingCard"
 
-function BookingList({ bookings, onDelete }) {
+function BookingList({ bookings, onDelete , deleteBooking }) {
   return (
     <div className="booking-grid">
       {bookings.map(b => (

@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Create a single Axios instance
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 5000, // 5 seconds timeout
@@ -10,9 +9,7 @@ const apiClient = axios.create({
 });
 
 
-// ----------------------------
-// REQUEST INTERCEPTOR
-// ----------------------------
+
 apiClient.interceptors.request.use(
   (config) => {
     console.log(
@@ -25,10 +22,7 @@ apiClient.interceptors.request.use(
   }
 );
 
-
-// ----------------------------
-// RESPONSE INTERCEPTOR
-// ----------------------------
+  
 apiClient.interceptors.response.use(
   (response) => {
     // Unwrap response.data

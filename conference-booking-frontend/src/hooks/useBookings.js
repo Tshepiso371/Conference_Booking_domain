@@ -17,7 +17,7 @@ export default function useBookings() {
       const data = await apiClient.get("/bookings", {
         signal,
       });
-
+      
       setBookings(data.items || data);
     } catch (err) {
       if (err.name === "CanceledError") return;
