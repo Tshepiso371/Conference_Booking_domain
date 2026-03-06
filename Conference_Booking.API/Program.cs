@@ -12,89 +12,137 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Database
+// ---------------------------
+// DATABASE
+// ---------------------------
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 2. Identity
+
+// ---------------------------
+// IDENTITY
+// ---------------------------
 builder.Services
     .AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-// 3. Services
-builder.Services.AddScoped<TokenService>();
 
+// Prevent redirect to /Account/Login (API should return 401)
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    };
+
+    options.Events.OnRedirectToAccessDenied = context =>
+    {
+        context.Response.StatusCode = 403;
+        return Task.CompletedTask;
+    };
+});
+
+
+// ---------------------------
+// SERVICES
+// ---------------------------
+builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<IBookingStore, BookingStore>();
 builder.Services.AddScoped<IRoomStore, RoomStore>();
 builder.Services.AddScoped<BookingManager>();
 
-// 4. JWT authentication
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+
+// ---------------------------
+// JWT AUTHENTICATION
+// ---------------------------
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
-            )
-        };
-    });
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
 
-builder.Services.AddAuthorization(); 
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
 
-// 5. Controllers + Swagger
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
+        )
+    };
+});
+
+builder.Services.AddAuthorization();
+
+
+// ---------------------------
+// CONTROLLERS + SWAGGER
+// ---------------------------
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Enter: Bearer {your JWT token}"
-    });
-
-    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-    {
+    options.AddSecurityDefinition("Bearer",
+        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
         {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            Name = "Authorization",
+            Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+            Description = "Enter: Bearer {your JWT token}"
+        });
+
+    options.AddSecurityRequirement(
+        new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+        {
             {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+                    Reference =
+                        new Microsoft.OpenApi.Models.OpenApiReference
+                        {
+                            Type =
+                                Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                },
+                Array.Empty<string>()
+            }
+        });
 });
 
+
+// ---------------------------
+// CORS (React)
+// ---------------------------
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("VitePolicy", policy =>
     {
         policy.WithOrigins("http://localhost:5173")
               .AllowAnyHeader()
-              .WithMethods("GET", "POST", "PUT", "DELETE");
+              .AllowAnyMethod();
     });
 });
+
 
 var app = builder.Build();
 
 
+// ---------------------------
+// DATABASE MIGRATION
+// ---------------------------
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -102,8 +150,15 @@ using (var scope = app.Services.CreateScope())
 }
 
 
+// ---------------------------
+// SEED USERS
+// ---------------------------
 await IdentitySeeder.SeedAsync(app.Services);
 
+
+// ---------------------------
+// SEED ROOMS + BOOKINGS
+// ---------------------------
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -111,13 +166,20 @@ using (var scope = app.Services.CreateScope())
     await SeedData.SeedAsync(context);
 }
 
- 
+
+// ---------------------------
+// DEVELOPMENT TOOLS
+// ---------------------------
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+
+// ---------------------------
+// MIDDLEWARE
+// ---------------------------
 app.UseHttpsRedirection();
 
 app.UseCors("VitePolicy");
@@ -127,7 +189,11 @@ app.UseAuthorization();
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-app.MapControllers(); 
+
+// ---------------------------
+// ROUTES
+// ---------------------------
+app.MapControllers();
 
 app.MapGet("/health", () => "Healthy");
 
