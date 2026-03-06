@@ -2,38 +2,32 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Conference_Booking.API.DTOs;
 using Conference_Booking_domain.Logic;
-using Conference_Booking_domain.Interfaces;
 
 namespace Conference_Booking.API.Controllers
 {
     [ApiController]
     [Route("api/bookings")]
-    //[Authorize] // enable later
+    [Authorize]
     public class BookingsController : ControllerBase
     {
         private readonly BookingManager _bookingManager;
-        private readonly IBookingStore _bookingStore;
 
-        public BookingsController(
-            BookingManager bookingManager,
-            IBookingStore bookingStore)
+        public BookingsController(BookingManager bookingManager)
         {
             _bookingManager = bookingManager;
-            _bookingStore = bookingStore;
         }
 
         // ---------------------------
         // CREATE BOOKING
         // ---------------------------
 
-       // [Authorize(Roles = "Employee,Receptionist")]
+        [Authorize(Roles = "Employee,Receptionist")]
         [HttpPost]
         public async Task<IActionResult> CreateBooking(
             [FromBody] BookingCreateRequestDto request)
         {
             try
             {
-                // Get logged-in user (will work after JWT is enabled)
                 var username = User.Identity?.Name ?? "Anonymous";
 
                 var booking = await _bookingManager.CreateBookingAsync(
@@ -63,10 +57,10 @@ namespace Conference_Booking.API.Controllers
         }
 
         // ---------------------------
-        // SEARCH + FILTER + PAGINATION
+        // SEARCH BOOKINGS
         // ---------------------------
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> SearchBookings(
             [FromQuery] string? room,
@@ -109,7 +103,7 @@ namespace Conference_Booking.API.Controllers
         // CANCEL BOOKING
         // ---------------------------
 
-        //[Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee")]
         [HttpPost("{id}/cancel")]
         public async Task<IActionResult> CancelBooking(int id)
         {
@@ -121,7 +115,7 @@ namespace Conference_Booking.API.Controllers
         // RESOLVE CONFLICT
         // ---------------------------
 
-       // [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("{id}/resolve")]
         public async Task<IActionResult> ResolveConflict(int id)
         {

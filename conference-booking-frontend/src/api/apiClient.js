@@ -1,41 +1,38 @@
 import axios from "axios";
 
-// Create a single Axios instance
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 5000, // 5 seconds timeout
+  timeout: 5000,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 
-// ----------------------------
 // REQUEST INTERCEPTOR
-// ----------------------------
-apiClient.interceptors.request.use(
-  (config) => {
-    console.log(
-      `Sending ${config.method?.toUpperCase()} to ${config.url}`
-    );
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+apiClient.interceptors.request.use((config) => {
+
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
+
+  return config;
+});
 
 
-// ----------------------------
 // RESPONSE INTERCEPTOR
-// ----------------------------
 apiClient.interceptors.response.use(
-  (response) => {
-    // Unwrap response.data
-    return response.data;
-  },
+  (response) => response.data,
+
   (error) => {
-    console.error("API Error:", error.message);
+
+    if (error.response?.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+
     return Promise.reject(error);
   }
 );

@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import useBookings from "./hooks/useBookings";
 
 function App() {
-  const { bookings, loading, error, cancelBooking } = useBookings();
+  const { bookings, loading, error,refetch,  cancelBooking } = useBookings();
 
   if (loading) return <h2>Loading bookings...</h2>;
   if (error) return <h2>{error}</h2>;
@@ -19,11 +19,11 @@ function App() {
         <h2>Total Bookings: {bookings.length}</h2>
 
         
-        <BookingForm />
+        <BookingForm onBookingCreated={refetch} />
 
         <BookingList
           bookings={bookings}
-          onDelete={cancelBooking}
+          deleteBooking={cancelBooking}
         />
       </div>
 

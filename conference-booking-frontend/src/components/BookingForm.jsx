@@ -1,57 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "./Button";
-import { rooms } from "../Data/mockData";
+import { fetchRooms } from "../services/roomService";
+import { createBooking } from "../services/bookingService";
 
-function BookingForm({ onAddBooking }) {
-  const [roomName, setRoomName] = useState("");
-  const [user, setUser] = useState("");
+function BookingForm({ onBookingCreated }) {
+
+  const [rooms, setRooms] = useState([]);
+  const [roomId, setRoomId] = useState("");
   const [date, setDate] = useState("");
-  
 
-  function handleSubmit(e) {
+  useEffect(() => {
+    async function loadRooms() {
+      try {
+        const data = await fetchRooms();
+        setRooms(data);
+      } catch (err) {
+        console.error("Failed to load rooms");
+      }
+    }
+
+    loadRooms();
+  }, []);
+
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!roomName || !user || !date) {
+    if (!roomId || !date) {
       alert("Please fill all fields");
       return;
     }
 
-    const newBooking = {
-      id: Date.now(),
-      roomName,
-      user,
-      date,
-    }; 
+    try {
+      const start = new Date(date);
+      const end = new Date(start);
+      end.setHours(end.getHours() + 1);
 
-    onAddBooking(newBooking);
+      await createBooking(
+        roomId,
+        start.toISOString(),
+        end.toISOString()
+      );
 
-    // Clear inputs
-    setRoomName("");
-    setUser("");
-    setDate("");
+      onBookingCreated();
+
+      setRoomId("");
+      setDate("");
+
+    } catch (err) {
+      alert(err.message);
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className="booking-form">
+
       <select
-  value={roomName}
-  onChange={(e) => setRoomName(e.target.value)}
->
-  <option value="">Select Room</option>
+        value={roomId}
+        onChange={(e) => setRoomId(e.target.value)}
+      >
+        <option value="">Select Room</option>
 
-  {rooms.map((room) => (
-    <option key={room} value={room}>
-      {room}
-    </option>
-  ))}
-</select>
+        {rooms.map((room) => (
+          <option key={room.id} value={room.id}>
+            {room.name}
+          </option>
+        ))}
 
-      <input
-        type="text"
-        placeholder="User Name"
-        value={user}
-        onChange={(e) => setUser(e.target.value)}
-      />
+      </select>
 
       <input
         type="date"
@@ -61,16 +76,15 @@ function BookingForm({ onAddBooking }) {
 
       <button type="submit">Add booking</button>
 
-  <Button
-    label="Clear"
-    type="button"
-    onClick={() => {
-    setRoomName("");
-    setUser("");
-    setDate("");
-  }
-}
-    />
+      <Button
+        label="Clear"
+        type="button"
+        onClick={() => {
+          setRoomId("");
+          setDate("");
+        }}
+      />
+
     </form>
   );
 }
