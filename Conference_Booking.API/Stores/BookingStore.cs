@@ -54,7 +54,6 @@ namespace Conference_Booking.API.Stores
             int pageSize)
         {
             IQueryable<Booking> query = _context.Bookings
-                .AsNoTracking()
                 .Include(b => b.Room);
 
             // Filtering (Database Level)
