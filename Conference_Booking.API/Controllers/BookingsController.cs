@@ -7,7 +7,7 @@ namespace Conference_Booking.API.Controllers
 {
     [ApiController]
     [Route("api/bookings")]
-    //[Authorize]
+    [Authorize]
     public class BookingsController : ControllerBase
     {
         private readonly BookingManager _bookingManager;
@@ -21,7 +21,7 @@ namespace Conference_Booking.API.Controllers
         // CREATE BOOKING
         // ---------------------------
 
-        //[Authorize(Roles = "Employee,Receptionist")]
+        [Authorize(Roles = "Employee,Receptionist")]
         [HttpPost]
         public async Task<IActionResult> CreateBooking(
             [FromBody] BookingCreateRequestDto request)
@@ -60,7 +60,7 @@ namespace Conference_Booking.API.Controllers
         // SEARCH BOOKINGS
         // ---------------------------
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> SearchBookings(
             [FromQuery] string? room,
@@ -105,7 +105,7 @@ namespace Conference_Booking.API.Controllers
         // CANCEL BOOKING
         // ---------------------------
 
-        //[Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Employee")]
         [HttpPost("{id}/cancel")]
         public async Task<IActionResult> CancelBooking(int id)
        {
@@ -124,7 +124,7 @@ namespace Conference_Booking.API.Controllers
         // RESOLVE CONFLICT
         // ---------------------------
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("{id}/resolve")]
         public async Task<IActionResult> ResolveConflict(int id)
         {
