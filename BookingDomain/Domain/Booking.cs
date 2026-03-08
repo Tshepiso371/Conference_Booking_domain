@@ -49,11 +49,11 @@ using Conference_Booking_domain.Enums;
     }
 
     public void Cancel()
-    {
-        if (Status == BookingStatus.Available)
-            throw new InvalidOperationException("Not active.");
+{
+    if (Status != BookingStatus.Booked)
+        throw new InvalidOperationException("Booking is not active.");
 
-        Status = BookingStatus.Available;
-        CancelledAt = DateTime.UtcNow;
-    }
+    Status = BookingStatus.Available;
+    CancelledAt = DateTime.UtcNow;
+}
 }

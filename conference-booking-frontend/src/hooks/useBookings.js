@@ -26,9 +26,9 @@ export default function useBookings() {
       setError("");       // Clear previous errors
 
       // Send GET request with optional AbortController signal
-      const data = await apiClient.get("/bookings", {
-        signal,
-      });
+      const data = await apiClient.get("/bookings?page=1&pageSize=50", {
+  signal,
+});
       
       // Support both paginated and non-paginated responses
       // If API returns { items: [...] } use items

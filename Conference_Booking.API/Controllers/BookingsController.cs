@@ -70,7 +70,7 @@ namespace Conference_Booking.API.Controllers
             [FromQuery] bool? activeRooms,
             [FromQuery] string? sortBy = "date",
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10)
+            [FromQuery] int pageSize = 50)
         {
             var (bookings, totalCount) =
                 await _bookingManager.SearchBookingsAsync(
@@ -85,7 +85,9 @@ namespace Conference_Booking.API.Controllers
                 Start = b.StartTime,
                 End = b.EndTime,
                 CreatedAt = b.CreatedAt,
-                CreatedBy = b.CreatedBy
+                CreatedBy = b.CreatedBy,
+                Status = b.Status.ToString(),
+                CancelledAt = b.CancelledAt
             });
 
             var result = new PagedResultDto<BookingSummaryDto>
@@ -106,10 +108,17 @@ namespace Conference_Booking.API.Controllers
         //[Authorize(Roles = "Employee")]
         [HttpPost("{id}/cancel")]
         public async Task<IActionResult> CancelBooking(int id)
-        {
-            await _bookingManager.CancelBookingAsync(id);
-            return Ok("Booking cancelled.");
-        }
+       {
+       try
+      {
+        await _bookingManager.CancelBookingAsync(id);
+        return Ok("Booking cancelled.");
+       }
+        catch (Exception ex)
+       {
+        return BadRequest(ex.Message);
+       }
+}
 
         // ---------------------------
         // RESOLVE CONFLICT

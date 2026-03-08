@@ -14,9 +14,9 @@ namespace Conference_Booking.API.Stores
             _context = context;
         }
 
-        // -------------------------------------------------
-        // BASIC CRUD (Used by BookingManager)
-        
+        // -----------------------------
+        // GET ALL BOOKINGS
+        // -----------------------------
         public async Task<List<Booking>> GetAllAsync()
         {
             return await _context.Bookings
@@ -24,25 +24,45 @@ namespace Conference_Booking.API.Stores
                 .ToListAsync();
         }
 
+        // -----------------------------
+        // GET BOOKING BY ID
+        // -----------------------------
+        public async Task<Booking?> GetByIdAsync(int id)
+        {
+            return await _context.Bookings
+                .Include(b => b.Room)
+                .FirstOrDefaultAsync(b => b.Id == id);
+        }
+
+        // -----------------------------
+        // ADD BOOKING
+        // -----------------------------
         public async Task AddAsync(Booking booking)
         {
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
         }
 
+        // -----------------------------
+        // UPDATE BOOKING
+        // -----------------------------
         public async Task UpdateAsync(Booking booking)
         {
             _context.Bookings.Update(booking);
             await _context.SaveChangesAsync();
         }
 
-        public async Task SaveChangesAsync(Booking booking)
+        // -----------------------------
+        // SAVE CHANGES
+        // -----------------------------
+        public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
 
-        // ASSIGNMENT 3.3 — SEARCH + FILTER + PAGINATION
-
+        // -----------------------------
+        // SEARCH + FILTER + PAGINATION
+        // -----------------------------
         public async Task<(List<Booking> Items, int TotalCount)> SearchAsync(
             string? roomName,
             string? location,
@@ -56,8 +76,7 @@ namespace Conference_Booking.API.Stores
             IQueryable<Booking> query = _context.Bookings
                 .Include(b => b.Room);
 
-            // Filtering (Database Level)
-
+            // Filtering
             if (!string.IsNullOrWhiteSpace(roomName))
                 query = query.Where(b => b.Room.Name == roomName);
 
@@ -73,8 +92,7 @@ namespace Conference_Booking.API.Stores
             if (activeRooms.HasValue)
                 query = query.Where(b => b.Room.IsActive == activeRooms.Value);
 
-            // Sorting (Before Pagination)
-
+            // Sorting
             query = sortBy?.ToLower() switch
             {
                 "room" => query.OrderBy(b => b.Room.Name),
@@ -82,11 +100,7 @@ namespace Conference_Booking.API.Stores
                 _ => query.OrderBy(b => b.StartTime)
             };
 
-            // Total Count (Before Skip/Take)
-
             var totalCount = await query.CountAsync();
-
-            // Pagination
 
             var items = await query
                 .Skip((page - 1) * pageSize)

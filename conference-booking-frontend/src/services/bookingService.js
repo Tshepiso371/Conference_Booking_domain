@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 // -----------------------------
 export async function fetchAllBookings() {
   try {
-    const response = await fetch(`${BASE_URL}/bookings`, {
+    const response = await fetch(`${BASE_URL}/bookings?page=1&pageSize=50`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -18,7 +18,8 @@ export async function fetchAllBookings() {
 
     const data = await response.json();
 
-    return data.items || data;
+    // Backend returns { items, totalCount }
+    return data.items;
 
   } catch (error) {
     throw error.message || "Server error";
@@ -60,7 +61,6 @@ export async function createBooking(booking) {
 // -----------------------------
 export async function cancelBooking(id) {
   try {
-
     const token = localStorage.getItem("token");
 
     const res = await fetch(`${BASE_URL}/bookings/${id}/cancel`, {

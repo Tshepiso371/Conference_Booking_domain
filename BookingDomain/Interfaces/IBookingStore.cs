@@ -8,11 +8,16 @@ namespace Conference_Booking_domain.Interfaces
     public interface IBookingStore
     {
         Task<List<Booking>> GetAllAsync();
-        Task AddAsync(Booking booking);
-        Task UpdateAsync(Booking booking);
-        Task SaveChangesAsync(Booking booking);
 
-        // Filtering at entity level
+        Task<Booking?> GetByIdAsync(int id);
+
+        Task AddAsync(Booking booking);
+
+        Task UpdateAsync(Booking booking);
+
+        Task SaveChangesAsync();
+
+        // SEARCH + FILTER + PAGINATION
         Task<(List<Booking> Items, int TotalCount)> SearchAsync(
             string? roomName,
             string? location,

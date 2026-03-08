@@ -16,5 +16,9 @@ namespace Conference_Booking.API.DTOs
         public DateTime CreatedAt {get; set;}
 
         public string CreatedBy {get; set;}
+
+        public string Status {get; set;}
+
+        public DateTime? CancelledAt {get; set;}
     }
 }

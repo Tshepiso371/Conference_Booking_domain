@@ -63,9 +63,7 @@ namespace Conference_Booking_domain.Logic
         // -----------------------------
         public async Task CancelBookingAsync(int bookingId)
         {
-            var bookings = await _bookingStore.GetAllAsync();
-
-            var booking = bookings.FirstOrDefault(b => b.Id == bookingId);
+            var booking = await _bookingStore.GetByIdAsync(bookingId);
 
             if (booking == null)
                 throw new BookingException("Booking not found.");
@@ -80,9 +78,7 @@ namespace Conference_Booking_domain.Logic
         // -----------------------------
         public async Task ResolveConflictAsync(int bookingId)
         {
-            var bookings = await _bookingStore.GetAllAsync();
-
-            var booking = bookings.FirstOrDefault(b => b.Id == bookingId);
+            var booking = await _bookingStore.GetByIdAsync(bookingId);
 
             if (booking == null)
                 throw new BookingNotFoundException("Booking not found.");
