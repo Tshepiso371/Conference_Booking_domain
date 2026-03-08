@@ -23,7 +23,7 @@ function App() {
 
         <BookingList
           bookings={bookings}
-          deleteBooking={cancelBooking}
+          onDelete={cancelBooking}
         />
       </div>
 

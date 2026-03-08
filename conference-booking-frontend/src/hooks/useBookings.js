@@ -21,42 +21,40 @@ export default function useBookings() {
   // useCallback ensures stable function reference
   // (prevents unnecessary re-renders / effect triggers)
   const fetchBookings = useCallback(async (signal) => {
-    try {
-      setLoading(true);   // Start loading
-      setError("");       // Clear previous errors
+  try {
+    setLoading(true);
+    setError("");
 
-      // Send GET request with optional AbortController signal
-      const data = await apiClient.get("/bookings?page=1&pageSize=50", {
-  signal,
-});
-      
-      // Support both paginated and non-paginated responses
-      // If API returns { items: [...] } use items
-      // Otherwise assume response is already an array
-      setBookings(data.items || data);
+    const data = await apiClient.get("/bookings?page=1&pageSize=50", {
+      signal,
+    });
 
-    } catch (err) {
-      if (err.name === "CanceledError") return;
+    const list = data.items || data;
 
-      // Timeout error (Axios-specific)
-      if (err.code === "ECONNABORTED") {
-        setError("The server took too long to respond (timeout).");
-      } else if (err.message === "Network Error") {
-        setError("Cannot reach server. Is the backend running?");
-      } else if (err.response) {
-        setError(
-          `Server error ${err.response.status}: ${err.response.statusText}`
-        );
-      } else {
-        setError("Unexpected error occurred.");
-      }
+    // Remove cancelled bookings from UI
+    const activeBookings = list.filter(b => !b.cancelledAt);
 
-    } finally {
-      // Always stop loading
-      setLoading(false);
+    setBookings(activeBookings);
+
+  } catch (err) {
+    if (err.name === "CanceledError") return;
+
+    if (err.code === "ECONNABORTED") {
+      setError("The server took too long to respond (timeout).");
+    } else if (err.message === "Network Error") {
+      setError("Cannot reach server. Is the backend running?");
+    } else if (err.response) {
+      setError(
+        `Server error ${err.response.status}: ${err.response.statusText}`
+      );
+    } else {
+      setError("Unexpected error occurred.");
     }
-  }, []);
 
+  } finally {
+    setLoading(false);
+  }
+}, []);
   // -----------------------------
   // CREATE BOOKING
   // -----------------------------
