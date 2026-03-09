@@ -1,8 +1,10 @@
+"use client";
+
 // Import React hooks
 import { useEffect, useState } from "react";
 
 // Get API base URL from Vite environment variables
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 function ConnectionStatus() {
   // State to track whether the backend is reachable

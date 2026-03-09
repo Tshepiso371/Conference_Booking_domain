@@ -128,18 +128,19 @@ builder.Services.AddSwaggerGen(options =>
 // ---------------------------
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("VitePolicy", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:3000")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
+    
 
 
 var app = builder.Build();
 
-
+app.UseCors("AllowFrontend");
 // ---------------------------
 // DATABASE MIGRATION
 // ---------------------------

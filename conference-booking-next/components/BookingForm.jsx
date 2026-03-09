@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import Button from "./Button";
 import { fetchRooms } from "../services/roomService";

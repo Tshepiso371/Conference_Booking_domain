@@ -1,3 +1,4 @@
+"use client";
 import ConnectionStatus from "./ConnectionStatus";
 
 function Navbar() {
