@@ -15,11 +15,7 @@ export default function useBookings() {
   // Store error messages
   const [error, setError] = useState("");
 
-  // -----------------------------
-  // FETCH BOOKINGS
-  // -----------------------------
-  // useCallback ensures stable function reference
-  // (prevents unnecessary re-renders / effect triggers)
+  
   const fetchBookings = useCallback(async (signal) => {
   try {
     setLoading(true);

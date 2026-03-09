@@ -16,7 +16,7 @@ function App() {
   // Hook for booking data
   const { bookings, loading, error, refetch, cancelBooking } = useBookings();
 
-  // If not logged in → show login form
+  // If not logged in show login form
   if (!isLoggedIn) {
     return <LoginForm onLogin={() => setIsLoggedIn(true)} />;
   }

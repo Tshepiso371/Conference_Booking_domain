@@ -10,7 +10,7 @@ function LoginForm({ onLogin }) {
     e.preventDefault();
 
     try {
-      const response = await apiClient.post("/auth/login", {
+      const response = await apiClient.post("/auth/login", { 
         username,
         password,
       });

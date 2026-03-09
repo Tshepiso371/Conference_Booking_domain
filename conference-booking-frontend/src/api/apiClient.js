@@ -10,15 +10,13 @@ const apiClient = axios.create({
 });
 
 
-// ----------------------------
-// REQUEST INTERCEPTOR
-// ----------------------------
+
 apiClient.interceptors.request.use(
   (config) => {
 
     console.log(`Sending ${config.method?.toUpperCase()} to ${config.url}`);
 
-    // :star: ADD THIS: attach JWT token automatically
+    
     const token = localStorage.getItem("token");
 
     if (token) {

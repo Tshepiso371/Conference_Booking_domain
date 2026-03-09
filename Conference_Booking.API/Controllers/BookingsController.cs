@@ -60,7 +60,7 @@ namespace Conference_Booking.API.Controllers
         // SEARCH BOOKINGS
         // ---------------------------
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Employee")]
         [HttpGet]
         public async Task<IActionResult> SearchBookings(
             [FromQuery] string? room,
@@ -124,7 +124,7 @@ namespace Conference_Booking.API.Controllers
         // RESOLVE CONFLICT
         // ---------------------------
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost("{id}/resolve")]
         public async Task<IActionResult> ResolveConflict(int id)
         {
