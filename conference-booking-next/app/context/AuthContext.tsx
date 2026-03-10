@@ -4,6 +4,13 @@ import { createContext, useContext, useState, useEffect } from "react";
 
 type User = {
   username: string;
+  role: string;
+};
+
+type TokenPayload = {
+  sub: string;
+  unique_name: string;
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role": string;
 };
 
 type AuthContextType = {
@@ -15,37 +22,38 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-type TokenPayload = {
-    sub: string;
-    role: string;
-};
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
-  // Hydrate from localStorage on first load
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
 
     if (storedToken) {
-      const decoded = jwtDecode<any>(storedToken);
+      const decoded = jwtDecode<TokenPayload>(storedToken);
+
       setToken(storedToken);
+
       setUser({
-  username: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
-        });
+        username: decoded.unique_name,
+        role: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+      });
     }
   }, []);
 
   const login = (token: string) => {
+
     localStorage.setItem("token", token);
-    const decoded = jwtDecode<any>(token);
-    console.log("Decoded token:", decoded);
+
+    const decoded = jwtDecode<TokenPayload>(token);
+
     setToken(token);
+
     setUser({
-  username: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
-});
+      username: decoded.unique_name,
+      role: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+    });
   };
 
   const logout = () => {

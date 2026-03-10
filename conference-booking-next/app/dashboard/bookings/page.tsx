@@ -1,5 +1,5 @@
 "use client";
-
+import RoleGuard from "@/components/RoleGuard";
 import { useRouter } from "next/navigation";
 import BookingList from "../../../components/BookingList";
 import useBookings from "../../../hooks/useBookings";
@@ -13,6 +13,7 @@ export default function BookingsPage() {
   if (error) return <p style={{ padding: "40px", color: "red" }}>{error}</p>;
 
   return (
+    <RoleGuard allowedRoles={["Admin"]}>
     <div
       style={{
         minHeight: "100vh",
@@ -58,5 +59,6 @@ export default function BookingsPage() {
         <BookingList bookings={bookings} onDelete={cancelBooking} />
       </div>
     </div>
+    </RoleGuard>
   );
 }

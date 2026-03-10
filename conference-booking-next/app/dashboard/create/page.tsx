@@ -1,4 +1,5 @@
 "use client";
+import RoleGuard from "@/components/RoleGuard";
 
 import { useRouter } from "next/navigation";
 import BookingForm from "../../../components/BookingForm";
@@ -9,6 +10,7 @@ export default function CreateBookingPage() {
   const { refetch } = useBookings();
 
   return (
+    <RoleGuard allowedRoles={["Employee", "Receptionist"]}>
     <div
       style={{
         minHeight: "100vh",
@@ -55,5 +57,7 @@ export default function CreateBookingPage() {
         <BookingForm onBookingCreated={refetch} />
       </div>
     </div>
+
+    </RoleGuard>
   );
 }
