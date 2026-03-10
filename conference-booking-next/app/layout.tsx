@@ -19,8 +19,8 @@ export default function RootLayout({
           backgroundColor: "#f4f6f8",
         }}
       >
-        <AuthProvider> // Provide auth context to the entire app
-          <Header /> // Header will be visible on all pages
+        <AuthProvider>   
+          <Header /> 
           {children}
         </AuthProvider>
       </body>

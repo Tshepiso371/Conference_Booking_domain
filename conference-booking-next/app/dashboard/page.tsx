@@ -30,20 +30,7 @@ export default function Dashboard() {
       >
         <h2>Conference Booking System</h2>
 
-        <button
-          onClick={handleLogout}
-          style={{
-            backgroundColor: "white",
-            color: "#6366f1",
-            border: "none",
-            padding: "8px 16px",
-            borderRadius: "6px",
-            fontWeight: "bold",
-            cursor: "pointer",
-          }}
-        >
-          Logout
-        </button>
+        
       </header>
 
       

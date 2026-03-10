@@ -1,5 +1,5 @@
 "use client";
-
+import { jwtDecode } from "jwt-decode";
 import { createContext, useContext, useState, useEffect } from "react";
 
 type User = {
@@ -15,6 +15,11 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+type TokenPayload = {
+    sub: string;
+    role: string;
+};
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const [token, setToken] = useState<string | null>(null);
@@ -25,15 +30,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const storedToken = localStorage.getItem("token");
 
     if (storedToken) {
+      const decoded = jwtDecode<any>(storedToken);
       setToken(storedToken);
-      setUser({ username: "Employee" }); // simple placeholder user
+      setUser({
+  username: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+        });
     }
   }, []);
 
   const login = (token: string) => {
     localStorage.setItem("token", token);
+    const decoded = jwtDecode<any>(token);
+    console.log("Decoded token:", decoded);
     setToken(token);
-    setUser({ username: "Employee" });
+    setUser({
+  username: decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+});
   };
 
   const logout = () => {
