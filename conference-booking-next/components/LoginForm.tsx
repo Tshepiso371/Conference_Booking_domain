@@ -3,6 +3,7 @@
 import { useState } from "react";
 import apiClient from "../api/apiClient";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../app/context/AuthContext"; // Import useAuth to access login function
 
 type LoginResponse = {
   token: string;
@@ -13,6 +14,7 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const {login} = useAuth(); // Get login function from auth context
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
   e.preventDefault();
 
@@ -28,7 +30,7 @@ function LoginForm() {
 
     const token = response.token;
 
-    localStorage.setItem("token", token);
+    login(token); // Update auth context with the token
 
     console.log("Login success");
     router.push("/dashboard/");

@@ -1,4 +1,5 @@
-
+import Header from "../components/Header";
+import { AuthProvider } from "./context/AuthContext";// Wrap the entire app with AuthProvider to provide auth context
 export const metadata = {
   title: "Conference Booking System",
   description: "Book conference rooms easily",
@@ -18,7 +19,10 @@ export default function RootLayout({
           backgroundColor: "#f4f6f8",
         }}
       >
-        {children}
+        <AuthProvider> // Provide auth context to the entire app
+          <Header /> // Header will be visible on all pages
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
