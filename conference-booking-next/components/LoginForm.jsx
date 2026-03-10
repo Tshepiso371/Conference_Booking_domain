@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import apiClient from "../api/apiClient";
+import { useRouter } from "next/navigation";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
+  const router = useRouter();
   async function handleSubmit(e) {
   e.preventDefault();
 
@@ -21,11 +22,12 @@ function LoginForm() {
 
     console.log("API response:", response);
 
-    const token = response.data.token;
+    const token = response.token;
 
     localStorage.setItem("token", token);
 
     console.log("Login success");
+    router.push("/dashboard");
 
   } catch (err) {
     console.log("LOGIN ERROR:", err.response);
