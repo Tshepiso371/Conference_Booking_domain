@@ -4,6 +4,10 @@ import { useState } from "react";
 import apiClient from "../api/apiClient";
 import { useRouter } from "next/navigation";
 
+type LoginResponse = {
+  token: string;
+};
+
 function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -15,19 +19,19 @@ function LoginForm() {
   console.log("Sending login request:", username, password);
 
   try {
-    const response = await apiClient.post("/auth/login", {
+    const response : LoginResponse = await  apiClient.post("/auth/login", {
       username,
       password,
     });
 
     console.log("API response:", response);
 
-    const token = response.data.token;
+    const token = response.token;
 
     localStorage.setItem("token", token);
 
     console.log("Login success");
-    router.push("/dashboard/create");
+    router.push("/dashboard/");
 
   } catch (err: any) {
     console.log("LOGIN ERROR:", err.response);
