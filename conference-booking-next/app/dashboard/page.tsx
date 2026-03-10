@@ -1,62 +1,42 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import BookingList from "../../components/BookingList";
-import BookingForm from "../../components/BookingForm";
-import useBookings from "../../hooks/useBookings";
 
 export default function Dashboard() {
   const router = useRouter();
-
-  const { bookings, loading, error, cancelBooking, refetch } = useBookings();
 
   function handleLogout() {
     localStorage.removeItem("token");
     router.push("/login");
   }
 
-  if (loading)
-    return (
-      <div style={{ textAlign: "center", marginTop: "50px" }}>
-        <p>Loading bookings...</p>
-      </div>
-    );
-
-  if (error)
-    return (
-      <div style={{ textAlign: "center", marginTop: "50px", color: "red" }}>
-        <p>{error}</p>
-      </div>
-    );
-
   return (
     <div
       style={{
         minHeight: "100vh",
-        backgroundColor: "#f4f6fb",
+        background: "linear-gradient(135deg,#6366f1,#9333ea)",
+        color: "white",
         fontFamily: "Arial, sans-serif",
       }}
     >
-      {/* HEADER / NAVBAR */}
+      {/* HEADER */}
       <header
         style={{
-          backgroundColor: "#4f46e5",
-          color: "white",
           padding: "20px 40px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
         }}
       >
-        <h2 style={{ margin: 0 }}>Conference Booking System</h2>
+        <h2>Conference Booking System</h2>
 
         <button
           onClick={handleLogout}
           style={{
             backgroundColor: "white",
-            color: "#4f46e5",
+            color: "#6366f1",
             border: "none",
-            padding: "8px 15px",
+            padding: "8px 16px",
             borderRadius: "6px",
             fontWeight: "bold",
             cursor: "pointer",
@@ -66,46 +46,63 @@ export default function Dashboard() {
         </button>
       </header>
 
-      {/* PAGE CONTENT */}
+      {/* MAIN */}
       <div
         style={{
-          padding: "40px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "30px",
+          textAlign: "center",
+          marginTop: "100px",
         }}
       >
-        <h1 style={{ color: "#333" }}>Dashboard</h1>
+        <h1 style={{ fontSize: "40px", marginBottom: "10px" }}>
+          Welcome to the Dashboard
+        </h1>
 
-        {/* BOOKING FORM CARD */}
+        <p style={{ fontSize: "18px", opacity: 0.9 }}>
+          Select an option below
+        </p>
+
+        {/* BUTTONS */}
         <div
           style={{
-            background: "white",
-            padding: "25px",
-            borderRadius: "10px",
-            boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+            marginTop: "50px",
+            display: "flex",
+            justifyContent: "center",
+            gap: "30px",
           }}
         >
-          <h2 style={{ marginBottom: "20px" }}>Create Booking</h2>
+          <button
+            onClick={() => router.push("/dashboard/create")}
+            style={{
+              padding: "16px 30px",
+              fontSize: "16px",
+              borderRadius: "10px",
+              border: "none",
+              backgroundColor: "white",
+              color: "#6366f1",
+              fontWeight: "bold",
+              cursor: "pointer",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+            }}
+          >
+            Create Booking
+          </button>
 
-          <BookingForm onBookingCreated={refetch} />
-        </div>
-
-        {/* BOOKING LIST CARD */}
-        <div
-          style={{
-            background: "white",
-            padding: "25px",
-            borderRadius: "10px",
-            boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h2 style={{ marginBottom: "20px" }}>Existing Bookings</h2>
-
-          <BookingList
-            bookings={bookings}
-            onDelete={cancelBooking}
-          />
+          <button
+            onClick={() => router.push("/dashboard/bookings")}
+            style={{
+              padding: "16px 30px",
+              fontSize: "16px",
+              borderRadius: "10px",
+              border: "none",
+              backgroundColor: "#22c55e",
+              color: "white",
+              fontWeight: "bold",
+              cursor: "pointer",
+              boxShadow: "0 8px 20px rgba(0,0,0,0.2)",
+            }}
+          >
+            Existing Bookings
+          </button>
         </div>
       </div>
     </div>

@@ -27,7 +27,7 @@ function LoginForm() {
     localStorage.setItem("token", token);
 
     console.log("Login success");
-    router.push("/dashboard");
+    router.push("/dashboard/create");
 
   } catch (err) {
     console.log("LOGIN ERROR:", err.response);
