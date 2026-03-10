@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "next/link"; // Import Link from next/link for client-side navigation
 
 export default function HomePage() {
   return (

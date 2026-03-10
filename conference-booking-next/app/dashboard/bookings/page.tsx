@@ -21,7 +21,7 @@ export default function BookingsPage() {
         fontFamily: "Arial",
       }}
     >
-      {/* HEADER */}
+      
       <div
         style={{
           display: "flex",
@@ -29,7 +29,7 @@ export default function BookingsPage() {
           marginBottom: "30px",
         }}
       >
-        <h1>Existing Bookings</h1>
+        <h1>View Existing Bookings</h1>
 
         <button
           onClick={() => router.push("/dashboard")}
@@ -46,7 +46,7 @@ export default function BookingsPage() {
         </button>
       </div>
 
-      {/* CARD */}
+      
       <div
         style={{
           background: "white",

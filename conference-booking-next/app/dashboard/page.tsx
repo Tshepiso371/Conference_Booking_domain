@@ -46,7 +46,7 @@ export default function Dashboard() {
         </button>
       </header>
 
-      {/* MAIN */}
+      
       <div
         style={{
           textAlign: "center",
@@ -61,7 +61,7 @@ export default function Dashboard() {
           Select an option below
         </p>
 
-        {/* BUTTONS */}
+        
         <div
           style={{
             marginTop: "50px",

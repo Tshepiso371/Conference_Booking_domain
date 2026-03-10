@@ -17,7 +17,7 @@ export default function CreateBookingPage() {
         fontFamily: "Arial",
       }}
     >
-      {/* TOP BAR */}
+      
       <div
         style={{
           display: "flex",
@@ -42,7 +42,7 @@ export default function CreateBookingPage() {
         </button>
       </div>
 
-      {/* CARD */}
+      
       <div
         style={{
           background: "white",
